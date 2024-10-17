@@ -1,10 +1,3 @@
-// app/screens/page.js
-
-const username = "api@omg.group";
-const password = "V041Digq";
-const apiUrl =
-	"https://stacks.targetr.net/rest-api/v1/screens?groupId=034CD62B516544";
-
 // กำหนดให้รีเฟรชทุก 60 วินาที
 export const revalidate = 60;
 
