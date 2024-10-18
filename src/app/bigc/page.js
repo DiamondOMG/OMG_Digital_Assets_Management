@@ -6,7 +6,7 @@ import {
 } from "material-react-table";
 import { ThemeContextProvider } from "@/context/themeContext";
 
-const Example = ({ data }) => {
+const BigC = ({ data }) => {
 	// คอลัมน์จะต้องมีการใช้ useMemo หรือถูกกำหนดไว้ข้างนอกคอมโพเนนต์
 	const columns = useMemo(
 		() => [
@@ -76,4 +76,4 @@ const Example = ({ data }) => {
 	);
 };
 
-export default Example;
+export default BigC;

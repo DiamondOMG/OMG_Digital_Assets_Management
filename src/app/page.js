@@ -1,4 +1,4 @@
-import Example from "./example/page";
+import BigC from "./bigc/page";
 
 // กำหนดให้รีเฟรชทุก 600 วินาที
 export const revalidate = 600;
@@ -24,7 +24,7 @@ const ScreensPage = async () => {
 
 	return (
 		<div>
-			<Example data={screens} />
+			<BigC data={screens} />
 		</div>
 	);
 };
