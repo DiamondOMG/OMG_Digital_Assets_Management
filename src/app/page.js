@@ -1,12 +1,7 @@
-// app/screens/page.js
+import Example from "./example/page";
 
-const username = "api@omg.group";
-const password = "V041Digq";
-const apiUrl =
-	"https://stacks.targetr.net/rest-api/v1/screens?groupId=034CD62B516544";
-
-// กำหนดให้รีเฟรชทุก 60 วินาที
-export const revalidate = 60;
+// กำหนดให้รีเฟรชทุก 600 วินาที
+export const revalidate = 600;
 
 const fetchScreens = async () => {
 	// ใช้ URL แบบสมบูรณ์
@@ -22,10 +17,14 @@ const fetchScreens = async () => {
 const ScreensPage = async () => {
 	const screens = await fetchScreens();
 
+	// ตรวจสอบกรณีที่ screens เป็น undefined
+	if (!screens) {
+		return <div>Error loading screens data.</div>; // แสดงข้อความเมื่อเกิดข้อผิดพลาด
+	}
+
 	return (
 		<div>
-			<h1>Screens</h1>
-			<pre>{JSON.stringify(screens, null, 2)}</pre>
+			<Example data={screens} />
 		</div>
 	);
 };
