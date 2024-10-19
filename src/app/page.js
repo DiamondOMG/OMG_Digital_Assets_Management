@@ -11,9 +11,7 @@ const ScreensPage = () => {
 		// ฟังก์ชันสำหรับดึงข้อมูล API
 		const fetchScreens = async () => {
 			try {
-				const response = await fetch(
-					`${process.env.NEXT_PUBLIC_API_URL}/api/screens`
-				);
+				const response = await fetch(`/api/screens`);
 				if (!response.ok) {
 					throw new Error("Failed to fetch screens");
 				}
