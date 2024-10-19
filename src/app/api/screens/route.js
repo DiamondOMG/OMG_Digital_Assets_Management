@@ -29,20 +29,19 @@ export async function GET() {
 		const currentTime = Date.now(); // Get current time in milliseconds
 
 		const normalizeData = rawData.map((obj) => {
-			const lastOnline = formatTimestamp(obj.data.lastLoaderCommsMillis);
-			const lastLoaderMillis = Number(obj.data.lastLoaderCommsMillis);
+			const lastOnline = obj.data.lastLoaderCommsMillis
+				? formatTimestamp(obj.data.lastLoaderCommsMillis)
+				: "-";
+			const lastLoaderMillis = Number(obj.data.lastLoaderCommsMillis) || 0;
 			const status =
 				currentTime - lastLoaderMillis > FIVE_DAYS_IN_MS ? "offline" : "online";
 
 			return {
-				screenId: obj.data.screenId,
-				label: obj.data.label,
-				storeCode: obj.data.storeCode,
-				storeLocation: obj.data.storeLocation,
-				storeSection: obj.data.storeSection,
-				displaysConnected: obj.data.displaysConnected,
-				runNumber: obj.data.runNumber,
-				wifiSsid: obj.data.wifiSsid,
+				screenId: obj.data.screenId || "-", // Replace missing field with '-'
+				label: obj.data.label || "-", // Replace missing field with '-'
+				storeLocation: obj.data.storeLocation || "-", // Replace missing field with '-'
+				storeSection: obj.data.storeSection || "-", // Replace missing field with '-'
+				displaysConnected: obj.data.displaysConnected || "-", // Replace missing field with '-'
 				lastOnline, // Renamed field
 				status, // Added status field
 			};
