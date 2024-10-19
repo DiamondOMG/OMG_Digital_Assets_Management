@@ -16,10 +16,14 @@
     "@mui/x-date-pickers": "^7.20.0",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
+    "export-to-csv": "^1.4.0",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
     "material-react-table": "^3.0.1",
     "next": "14.2.15",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "eslint": "^8",
