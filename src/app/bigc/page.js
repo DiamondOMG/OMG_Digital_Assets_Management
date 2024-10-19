@@ -17,22 +17,6 @@ import { mkConfig, generateCsv, download } from "export-to-csv";
 import * as XLSX from "xlsx";
 import { exportPdf } from "../../utils/exportPdf.js";
 
-const darkTheme = createTheme({
-	palette: {
-		mode: "dark",
-		primary: {
-			main: "#90caf9", // blue shade
-		},
-		background: {
-			default: "#121212", // dark background
-			paper: "#1d1d1d",
-		},
-		text: {
-			primary: "#ffffff", // white text
-		},
-	},
-});
-
 const columns = [
 	{ accessorKey: "screenId", header: "Screen ID", size: 150 },
 	{ accessorKey: "label", header: "Label", size: 200 },
@@ -249,11 +233,7 @@ const BigC = ({ data }) => {
 		),
 	});
 
-	return (
-		<ThemeProvider theme={darkTheme}>
-			<MaterialReactTable table={table} />
-		</ThemeProvider>
-	);
+	return <MaterialReactTable table={table} />;
 };
 
 export default BigC;
