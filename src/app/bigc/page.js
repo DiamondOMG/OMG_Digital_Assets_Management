@@ -4,7 +4,14 @@ import {
 	MaterialReactTable,
 	useMaterialReactTable,
 } from "material-react-table";
-import { Box, Button, Menu, MenuItem } from "@mui/material";
+import {
+	Box,
+	Button,
+	Menu,
+	MenuItem,
+	createTheme,
+	ThemeProvider,
+} from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { mkConfig, generateCsv, download } from "export-to-csv";
 import * as XLSX from "xlsx";

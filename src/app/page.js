@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import BigC from "./bigc/page";
+import Loader from "@/components/loader";
 
 const ScreensPage = () => {
 	const [screens, setScreens] = useState(null); // สร้าง state สำหรับเก็บข้อมูล screens
@@ -32,7 +33,7 @@ const ScreensPage = () => {
 
 	// กรณีข้อมูลยังไม่ถูกโหลด
 	if (!screens) {
-		return <div>Loading screens...</div>;
+		return <Loader />;
 	}
 
 	// แสดงข้อมูลเมื่อโหลดสำเร็จ
