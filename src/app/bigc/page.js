@@ -4,11 +4,34 @@ import {
 	MaterialReactTable,
 	useMaterialReactTable,
 } from "material-react-table";
-import { Box, Button, Menu, MenuItem } from "@mui/material";
+import {
+	Box,
+	Button,
+	Menu,
+	MenuItem,
+	createTheme,
+	ThemeProvider,
+} from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { mkConfig, generateCsv, download } from "export-to-csv";
 import * as XLSX from "xlsx";
 import { exportPdf } from "../../utils/exportPdf.js";
+
+const darkTheme = createTheme({
+	palette: {
+		mode: "dark",
+		primary: {
+			main: "#90caf9", // blue shade
+		},
+		background: {
+			default: "#121212", // dark background
+			paper: "#1d1d1d",
+		},
+		text: {
+			primary: "#ffffff", // white text
+		},
+	},
+});
 
 const columns = [
 	{ accessorKey: "screenId", header: "Screen ID", size: 150 },
@@ -226,7 +249,11 @@ const BigC = ({ data }) => {
 		),
 	});
 
-	return <MaterialReactTable table={table} />;
+	return (
+		<ThemeProvider theme={darkTheme}>
+			<MaterialReactTable table={table} />
+		</ThemeProvider>
+	);
 };
 
 export default BigC;
