@@ -98,11 +98,6 @@ const BigC = ({ data }) => {
 					columnFilterDisplayMode="popover"
 					paginationDisplayMode="pages"
 					positionToolbarAlertBanner="bottom"
-					initialState={{
-						pagination: {
-							pageSize: 20, // ตั้งค่าแถวเริ่มต้นให้แสดง 20 แถวต่อหน้า
-						},
-					}}
 					renderTopToolbarCustomActions={({ table }) => (
 						<Box
 							sx={{
