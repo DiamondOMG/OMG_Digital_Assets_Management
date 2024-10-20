@@ -1,7 +1,10 @@
 import axios from "axios";
+import dotenv from "dotenv";
 
-const username = "api@omg.group";
-const password = "V041Digq";
+dotenv.config();
+
+const username = process.env.USERNAMEOMG;
+const password = process.env.PASSWORDOMG;
 const apiUrl =
 	"https://stacks.targetr.net/rest-api/v1/screens?groupId=034CD62B516544";
 
