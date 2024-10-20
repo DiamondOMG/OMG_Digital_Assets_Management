@@ -90,9 +90,19 @@ const BigC = ({ data }) => {
 					columns={columns}
 					data={data || []}
 					enableRowSelection={true}
+					enableStickyHeader={true}
+					enableStickyFooter={true}
+					enableRowPinning={true}
+					isMultiSortEvent={() => true}
+					maxMultiSortColCount={3}
 					columnFilterDisplayMode="popover"
 					paginationDisplayMode="pages"
 					positionToolbarAlertBanner="bottom"
+					initialState={{
+						pagination: {
+							pageSize: 20, // ตั้งค่าแถวเริ่มต้นให้แสดง 20 แถวต่อหน้า
+						},
+					}}
 					renderTopToolbarCustomActions={({ table }) => (
 						<Box
 							sx={{
@@ -250,12 +260,6 @@ const BigC = ({ data }) => {
 							</Menu>
 						</Box>
 					)}
-					muiTableHeadRowProps={{
-						sx: {
-							backgroundColor: "#121212", // สีพื้นหลังของ header
-							color: "#ffffff", // สีตัวหนังสือใน header
-						},
-					}}
 				/>
 			</ThemeProvider>
 		</div>
