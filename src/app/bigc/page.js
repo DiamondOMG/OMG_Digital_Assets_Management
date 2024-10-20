@@ -11,6 +11,7 @@ import {
 	MenuItem,
 	createTheme,
 	ThemeProvider,
+	useTheme,
 } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { mkConfig, generateCsv, download } from "export-to-csv";
@@ -31,6 +32,24 @@ const BigC = ({ data }) => {
 	const [anchorElCsv, setAnchorElCsv] = useState(null);
 	const [anchorElPdf, setAnchorElPdf] = useState(null);
 	const [anchorElExcel, setAnchorElExcel] = useState(null);
+	const globalTheme = useTheme();
+
+	const tableTheme = useMemo(
+		() =>
+			createTheme({
+				palette: {
+					mode: "dark",
+					background: {
+						default: "#121212", // Dark background for the entire table
+						paper: "#1d1d1d", // Darker background for individual cells
+					},
+					text: {
+						primary: "#ffffff", // White text
+					},
+				},
+			}),
+		[globalTheme]
+	);
 
 	const csvConfig = mkConfig({
 		fieldSeparator: ",",
@@ -68,7 +87,7 @@ const BigC = ({ data }) => {
 	};
 
 	const table = useMaterialReactTable({
-		columns,
+		columns: columns,
 		data: data || [],
 		enableRowSelection: true,
 		columnFilterDisplayMode: "popover",
@@ -231,9 +250,39 @@ const BigC = ({ data }) => {
 				</Menu>
 			</Box>
 		),
+		muiTableHeadRowProps: {
+			sx: {
+				backgroundColor: "#1d1d1d", // สีพื้นหลังของ header
+				color: "#ffffff", // สีตัวหนังสือใน header
+			},
+		},
+		muiTableBodyCellProps: {
+			sx: {
+				backgroundColor: "#121212", // สีพื้นหลังของ body แต่ละเซลล์
+				color: "#ffffff", // สีตัวหนังสือใน body แต่ละเซลล์
+			},
+		},
+		muiTopToolbarProps: {
+			sx: {
+				backgroundColor: "#121212", // สีพื้นหลังของ body แต่ละเซลล์
+				color: "#ffffff", // สีตัวหนังสือใน body แต่ละเซลล์
+			},
+		},
+		muiBottomToolbarProps: {
+			sx: {
+				backgroundColor: "#121212", // สีพื้นหลังของ body แต่ละเซลล์
+				color: "#ffffff", // สีตัวหนังสือใน body แต่ละเซลล์
+			},
+		},
 	});
 
-	return <MaterialReactTable table={table} />;
+	return (
+		<div className=" bg-black h-100 min-vh-100 ">
+			<ThemeProvider theme={tableTheme}>
+				<MaterialReactTable table={table} />
+			</ThemeProvider>
+		</div>
+	);
 };
 
 export default BigC;
