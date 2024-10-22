@@ -11,7 +11,7 @@ import {
 	useTheme,
 } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import { mkConfig, generateCsv, download } from "export-to-csv";
+import { exportCsv } from "@/utils/exportCsv"; // นำเข้าฟังก์ชันจากไฟล์ที่แยกออกมา
 import { exportPdf } from "../utils/exportPdf"; // นำเข้าฟังก์ชัน export PDF ที่คุณสร้าง
 import { exportExcel } from "@/utils/exportExcel";
 
@@ -27,31 +27,15 @@ const Table = ({ data, columns }) => {
 				palette: {
 					mode: "dark",
 					background: {
-						default: "#121212", // Dark background for the entire table
-						paper: "#1d1d1d", // Darker background for individual cells
+						default: "#121212",
+						paper: "#1d1d1d",
 					},
 					text: {
-						primary: "#ffffff", // White text
+						primary: "#ffffff",
 					},
 				},
 			}),
 		[globalTheme]
-	);
-
-	const csvConfig = mkConfig({
-		fieldSeparator: ",",
-		decimalSeparator: ".",
-		useKeysAsHeaders: true,
-	});
-
-	// ฟังก์ชันสำหรับ Export CSV
-	const handleExportCsv = useMemo(
-		() => (rows) => {
-			const rowData = rows.map((row) => row.original);
-			const csv = generateCsv(csvConfig)(rowData);
-			download(csvConfig)(csv);
-		},
-		[data] // useMemo จะทำการสร้างฟังก์ชันใหม่เมื่อ 'data' เปลี่ยนแปลง
 	);
 
 	const handleOpenMenu = (setter) => (event) => {
@@ -102,7 +86,7 @@ const Table = ({ data, columns }) => {
 							>
 								<MenuItem
 									onClick={() => {
-										handleExportCsv(table.getPrePaginationRowModel().rows);
+										exportCsv(table.getPrePaginationRowModel().rows);
 										handleCloseMenu(setAnchorElCsv)();
 									}}
 								>
@@ -110,7 +94,7 @@ const Table = ({ data, columns }) => {
 								</MenuItem>
 								<MenuItem
 									onClick={() => {
-										handleExportCsv(table.getRowModel().rows);
+										exportCsv(table.getRowModel().rows);
 										handleCloseMenu(setAnchorElCsv)();
 									}}
 								>
@@ -118,7 +102,7 @@ const Table = ({ data, columns }) => {
 								</MenuItem>
 								<MenuItem
 									onClick={() => {
-										handleExportCsv(table.getPrePaginationRowModel().rows);
+										exportCsv(table.getPrePaginationRowModel().rows);
 										handleCloseMenu(setAnchorElCsv)();
 									}}
 								>
@@ -126,7 +110,7 @@ const Table = ({ data, columns }) => {
 								</MenuItem>
 								<MenuItem
 									onClick={() => {
-										handleExportCsv(table.getSelectedRowModel().rows);
+										exportCsv(table.getSelectedRowModel().rows);
 										handleCloseMenu(setAnchorElCsv)();
 									}}
 								>
