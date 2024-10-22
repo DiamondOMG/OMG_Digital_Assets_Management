@@ -11,21 +11,11 @@ import {
 	useTheme,
 } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import { mkConfig, generateCsv, download } from "export-to-csv";
-import * as XLSX from "xlsx";
-import { exportPdf } from "../../utils/exportPdf.js"; // นำเข้าฟังก์ชัน export PDF ที่คุณสร้าง
+import { exportCsv } from "@/utils/exportCsv"; // นำเข้าฟังก์ชันจากไฟล์ที่แยกออกมา
+import { exportPdf } from "../utils/exportPdf"; // นำเข้าฟังก์ชัน export PDF ที่คุณสร้าง
+import { exportExcel } from "@/utils/exportExcel";
 
-const columns = [
-	{ accessorKey: "screenId", header: "Screen ID", size: 150 },
-	{ accessorKey: "label", header: "Label", size: 200 },
-	{ accessorKey: "storeLocation", header: "Store Location", size: 200 },
-	{ accessorKey: "storeSection", header: "Store Section", size: 150 },
-	{ accessorKey: "displaysConnected", header: "Displays Connected", size: 150 },
-	{ accessorKey: "lastOnline", header: "Last Online", size: 150 },
-	{ accessorKey: "status", header: "Status", size: 100 },
-];
-
-const BigC = ({ data }) => {
+const Table = ({ data, columns }) => {
 	const [anchorElCsv, setAnchorElCsv] = useState(null);
 	const [anchorElPdf, setAnchorElPdf] = useState(null);
 	const [anchorElExcel, setAnchorElExcel] = useState(null);
@@ -37,42 +27,15 @@ const BigC = ({ data }) => {
 				palette: {
 					mode: "dark",
 					background: {
-						default: "#121212", // Dark background for the entire table
-						paper: "#1d1d1d", // Darker background for individual cells
+						default: "#121212",
+						paper: "#1d1d1d",
 					},
 					text: {
-						primary: "#ffffff", // White text
+						primary: "#ffffff",
 					},
 				},
 			}),
 		[globalTheme]
-	);
-
-	const csvConfig = mkConfig({
-		fieldSeparator: ",",
-		decimalSeparator: ".",
-		useKeysAsHeaders: true,
-	});
-
-	// ฟังก์ชันสำหรับ Export CSV
-	const handleExportCsv = useMemo(
-		() => (rows) => {
-			const rowData = rows.map((row) => row.original);
-			const csv = generateCsv(csvConfig)(rowData);
-			download(csvConfig)(csv);
-		},
-		[data] // useMemo จะทำการสร้างฟังก์ชันใหม่เมื่อ 'data' เปลี่ยนแปลง
-	);
-
-	const handleExportExcel = useMemo(
-		() => (rows) => {
-			const rowData = rows.map((row) => row.original);
-			const worksheet = XLSX.utils.json_to_sheet(rowData);
-			const workbook = XLSX.utils.book_new();
-			XLSX.utils.book_append_sheet(workbook, worksheet, "Data");
-			XLSX.writeFile(workbook, "data.xlsx");
-		},
-		[data] // useMemo จะทำการสร้างฟังก์ชันใหม่เมื่อ 'data' เปลี่ยนแปลง
 	);
 
 	const handleOpenMenu = (setter) => (event) => {
@@ -97,7 +60,6 @@ const BigC = ({ data }) => {
 					maxMultiSortColCount={3}
 					columnFilterDisplayMode="popover"
 					paginationDisplayMode="pages"
-					positionToolbarAlertBanner="bottom"
 					renderTopToolbarCustomActions={({ table }) => (
 						<Box
 							sx={{
@@ -124,7 +86,7 @@ const BigC = ({ data }) => {
 							>
 								<MenuItem
 									onClick={() => {
-										handleExportCsv(table.getPrePaginationRowModel().rows);
+										exportCsv(table.getPrePaginationRowModel().rows);
 										handleCloseMenu(setAnchorElCsv)();
 									}}
 								>
@@ -132,7 +94,7 @@ const BigC = ({ data }) => {
 								</MenuItem>
 								<MenuItem
 									onClick={() => {
-										handleExportCsv(table.getRowModel().rows);
+										exportCsv(table.getRowModel().rows);
 										handleCloseMenu(setAnchorElCsv)();
 									}}
 								>
@@ -140,7 +102,7 @@ const BigC = ({ data }) => {
 								</MenuItem>
 								<MenuItem
 									onClick={() => {
-										handleExportCsv(table.getPrePaginationRowModel().rows);
+										exportCsv(table.getPrePaginationRowModel().rows);
 										handleCloseMenu(setAnchorElCsv)();
 									}}
 								>
@@ -148,7 +110,7 @@ const BigC = ({ data }) => {
 								</MenuItem>
 								<MenuItem
 									onClick={() => {
-										handleExportCsv(table.getSelectedRowModel().rows);
+										exportCsv(table.getSelectedRowModel().rows);
 										handleCloseMenu(setAnchorElCsv)();
 									}}
 								>
@@ -222,7 +184,7 @@ const BigC = ({ data }) => {
 							>
 								<MenuItem
 									onClick={() => {
-										handleExportExcel(table.getPrePaginationRowModel().rows);
+										exportExcel(table.getPrePaginationRowModel().rows);
 										handleCloseMenu(setAnchorElExcel)();
 									}}
 								>
@@ -230,7 +192,7 @@ const BigC = ({ data }) => {
 								</MenuItem>
 								<MenuItem
 									onClick={() => {
-										handleExportExcel(table.getRowModel().rows);
+										exportExcel(table.getRowModel().rows);
 										handleCloseMenu(setAnchorElExcel)();
 									}}
 								>
@@ -238,7 +200,7 @@ const BigC = ({ data }) => {
 								</MenuItem>
 								<MenuItem
 									onClick={() => {
-										handleExportExcel(table.getPrePaginationRowModel().rows);
+										exportExcel(table.getPrePaginationRowModel().rows);
 										handleCloseMenu(setAnchorElExcel)();
 									}}
 								>
@@ -246,7 +208,7 @@ const BigC = ({ data }) => {
 								</MenuItem>
 								<MenuItem
 									onClick={() => {
-										handleExportExcel(table.getSelectedRowModel().rows);
+										exportExcel(table.getSelectedRowModel().rows);
 										handleCloseMenu(setAnchorElExcel)();
 									}}
 								>
@@ -261,4 +223,4 @@ const BigC = ({ data }) => {
 	);
 };
 
-export default BigC;
+export default Table;
