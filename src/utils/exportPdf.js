@@ -2,7 +2,8 @@ import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 
 export const exportPdf = (rows, columns) => {
-	const doc = new jsPDF();
+	// สร้าง PDF เป็นแนวนอน
+	const doc = new jsPDF({ orientation: "landscape" });
 	const tableData = rows.map((row) => Object.values(row.original));
 	const tableHeaders = columns.map((c) => c.header);
 

@@ -1,11 +1,11 @@
 "use client"; // บอกให้ Next.js รู้ว่านี่เป็น Client-Side Component
 
 import { useState, useEffect } from "react";
-import BigC from "./bigc/page";
+import Table from "@/components/table";
 import Loader from "@/components/loader";
 
 const ScreensPage = () => {
-	const [screens, setScreens] = useState(null); // สร้าง state สำหรับเก็บข้อมูล screens
+	const [data, setData] = useState(null); // สร้าง state สำหรับเก็บข้อมูล screens
 	const [error, setError] = useState(null); // สร้าง state สำหรับเก็บข้อมูลข้อผิดพลาด
 
 	useEffect(() => {
@@ -17,7 +17,7 @@ const ScreensPage = () => {
 					throw new Error("Failed to fetch screens");
 				}
 				const data = await response.json();
-				setScreens(data); // เก็บข้อมูลที่ดึงมาได้ใน state
+				setData(data); // เก็บข้อมูลที่ดึงมาได้ใน state
 			} catch (error) {
 				setError(error.message); // เก็บข้อความข้อผิดพลาดใน state
 			}
@@ -32,14 +32,28 @@ const ScreensPage = () => {
 	}
 
 	// กรณีข้อมูลยังไม่ถูกโหลด
-	if (!screens) {
+	if (!data) {
 		return <Loader />;
 	}
+
+	const columns = [
+		{ accessorKey: "screenId", header: "Screen ID", size: 150 },
+		{ accessorKey: "label", header: "Label", size: 200 },
+		{ accessorKey: "storeLocation", header: "Store Location", size: 200 },
+		{ accessorKey: "storeSection", header: "Store Section", size: 150 },
+		{
+			accessorKey: "displaysConnected",
+			header: "Displays Connected",
+			size: 150,
+		},
+		{ accessorKey: "lastOnline", header: "Last Online", size: 150 },
+		{ accessorKey: "status", header: "Status", size: 100 },
+	];
 
 	// แสดงข้อมูลเมื่อโหลดสำเร็จ
 	return (
 		<div>
-			<BigC data={screens} />
+			<Table data={data} columns={columns} />
 		</div>
 	);
 };
