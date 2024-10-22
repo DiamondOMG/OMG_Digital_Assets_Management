@@ -55,7 +55,9 @@ const Table = ({ data, columns }) => {
 					enableRowSelection={true}
 					enableStickyHeader={true}
 					enableStickyFooter={true}
-					enableRowPinning={true}
+					positionToolbarAlertBanner="bottom"
+					// enableRowPinning={true}
+					enableRowNumbers={true}
 					isMultiSortEvent={() => true}
 					maxMultiSortColCount={3}
 					columnFilterDisplayMode="popover"
