@@ -15,7 +15,7 @@ import { exportCsv } from "@/utils/exportCsv"; // นำเข้าฟังก
 import { exportPdf } from "../utils/exportPdf"; // นำเข้าฟังก์ชัน export PDF ที่คุณสร้าง
 import { exportExcel } from "@/utils/exportExcel";
 
-const Table = ({ data, columns }) => {
+const Table2 = ({ data, columns }) => {
 	const [anchorElCsv, setAnchorElCsv] = useState(null);
 	const [anchorElPdf, setAnchorElPdf] = useState(null);
 	const [anchorElExcel, setAnchorElExcel] = useState(null);
@@ -225,4 +225,4 @@ const Table = ({ data, columns }) => {
 	);
 };
 
-export default Table;
+export default Table2;
