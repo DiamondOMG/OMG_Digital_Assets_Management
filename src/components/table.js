@@ -137,7 +137,13 @@ const Table = ({ data, columns }) => {
 							>
 								<MenuItem
 									onClick={() => {
-										exportPdf(table.getPrePaginationRowModel().rows, columns);
+										const visibleColumns = table
+											.getAllColumns()
+											.filter((col) => col.getIsVisible());
+										exportPdf(
+											table.getPrePaginationRowModel().rows,
+											visibleColumns
+										);
 										handleCloseMenu(setAnchorElPdf)();
 									}}
 								>
@@ -145,7 +151,10 @@ const Table = ({ data, columns }) => {
 								</MenuItem>
 								<MenuItem
 									onClick={() => {
-										exportPdf(table.getRowModel().rows, columns);
+										const visibleColumns = table
+											.getAllColumns()
+											.filter((col) => col.getIsVisible());
+										exportPdf(table.getRowModel().rows, visibleColumns);
 										handleCloseMenu(setAnchorElPdf)();
 									}}
 								>
@@ -153,7 +162,13 @@ const Table = ({ data, columns }) => {
 								</MenuItem>
 								<MenuItem
 									onClick={() => {
-										exportPdf(table.getPrePaginationRowModel().rows, columns);
+										const visibleColumns = table
+											.getAllColumns()
+											.filter((col) => col.getIsVisible());
+										exportPdf(
+											table.getPrePaginationRowModel().rows,
+											visibleColumns
+										);
 										handleCloseMenu(setAnchorElPdf)();
 									}}
 								>
@@ -161,7 +176,10 @@ const Table = ({ data, columns }) => {
 								</MenuItem>
 								<MenuItem
 									onClick={() => {
-										exportPdf(table.getSelectedRowModel().rows, columns);
+										const visibleColumns = table
+											.getAllColumns()
+											.filter((col) => col.getIsVisible());
+										exportPdf(table.getSelectedRowModel().rows, visibleColumns);
 										handleCloseMenu(setAnchorElPdf)();
 									}}
 								>

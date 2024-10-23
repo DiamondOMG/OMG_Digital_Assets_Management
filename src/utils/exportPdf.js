@@ -1,6 +1,6 @@
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
-import { font } from "@/utils/Sarabun-Regular-normal";
+import { font } from "@/app/fonts/Sarabun-Regular-normal";
 
 export const exportPdf = (rows, columns) => {
 	// สร้าง PDF เป็นแนวนอน
@@ -11,9 +11,17 @@ export const exportPdf = (rows, columns) => {
 	doc.addFont("MyFont.ttf", "MyFont", "normal");
 	doc.setFont("MyFont");
 
-	// สร้างข้อมูลตาราง
-	const tableData = rows.map((row) => Object.values(row.original));
-	const tableHeaders = columns.map((c) => c.header);
+	const visibleColumns = columns.filter(
+		(col) =>
+			col.getIsVisible() &&
+			col.id !== "mrt-row-select" &&
+			col.id !== "mrt-row-numbers"
+	);
+
+	const tableHeaders = visibleColumns.map((col) => col.id);
+	const tableData = rows.map((row) =>
+		visibleColumns.map((col) => row.original[col.id] || "")
+	);
 
 	// ใช้ autoTable และกำหนดฟอนต์ใน styles
 	autoTable(doc, {
