@@ -17,6 +17,7 @@
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "dotenv": "^16.4.5",
+    "exceljs": "^4.4.0",
     "export-to-csv": "^1.4.0",
     "jspdf": "^2.5.2",
     "jspdf-autotable": "^3.8.4",
