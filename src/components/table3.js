@@ -1,9 +1,8 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import {
   MaterialReactTable,
   useMaterialReactTable,
-  MRT_TableContainer,
   MRT_TableHeadCellFilterContainer,
 } from "material-react-table";
 import {
