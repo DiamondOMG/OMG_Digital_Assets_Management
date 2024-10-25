@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { exportCsv } from "@/utils/exportCsv"; // นำเข้าฟังก์ชันจากไฟล์ที่แยกออกมา
-import { exportPdf } from "../utils/exportPdf"; // นำเข้าฟังก์ชัน export PDF ที่คุณสร้าง
+import { exportPdf } from "@/utils/exportPdf"; // นำเข้าฟังก์ชัน export PDF ที่คุณสร้าง
 import { exportExcel } from "@/utils/exportExcel";
 
 const Table2 = ({ data, columns }) => {
