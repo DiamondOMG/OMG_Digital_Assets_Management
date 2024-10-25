@@ -13,6 +13,13 @@ import {
   Button,
   Menu,
   MenuItem,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+  Chip,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -26,6 +33,12 @@ const Table3 = ({ data, columns }) => {
   const [anchorElPdf, setAnchorElPdf] = useState(null);
   const [anchorElExcel, setAnchorElExcel] = useState(null);
 
+  const [groupedIds, setGroupedIds] = useState({});
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [groupName, setGroupName] = useState("");
+  const [isShowFiltered, setIsShowFiltered] = useState(false);
+  const [filteredData, setFilteredData] = useState(data); // เพิ่มตัวแปร state ของ filteredData
+
   const handleOpenMenu = (setter) => (event) => {
     setter(event.currentTarget);
   };
@@ -38,7 +51,7 @@ const Table3 = ({ data, columns }) => {
   // สร้าง table instance
   const table = useMaterialReactTable({
     columns,
-    data,
+    data: filteredData, // ใช้ filteredData ใน table
     enableRowSelection: true,
     enableStickyHeader: true,
     enableStickyFooter: true,
@@ -218,9 +231,67 @@ const Table3 = ({ data, columns }) => {
             Export Selected Rows
           </MenuItem>
         </Menu>
+
+        {/* ปุ่มและ Dialog สำหรับจัดการกลุ่ม */}
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Button variant="contained" onClick={() => setIsDialogOpen(true)}>
+            Save Filtered IDs
+          </Button>
+
+          <Button variant="contained" onClick={handleFilterBySavedIds}>
+            {isShowFiltered ? "Show All" : "Show Only Saved IDs"}
+          </Button>
+
+          {Object.keys(groupedIds).map((group) => (
+            <Chip
+              key={group}
+              label={group}
+              onDelete={() => handleDeleteGroup(group)}
+              sx={{ borderRadius: "16px" }} // ขอบมล
+            />
+          ))}
+        </Stack>
       </Box>
     ),
   });
+
+  // เปิด-ปิด Dialog
+  const handleOpenDialog = () => setIsDialogOpen(true);
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+    setGroupName("");
+  };
+
+  // ฟังก์ชันบันทึก ID ของแถวที่ผ่านการกรองและรวมเข้าในกลุ่มใหม่
+  const handleSaveFilteredIds = () => {
+    const filteredIds = table.getRowModel().rows.map((row) => row.original.id);
+    setGroupedIds((prevGroups) => ({
+      ...prevGroups,
+      [groupName]: filteredIds,
+    }));
+    handleCloseDialog();
+  };
+
+  // ฟังก์ชันกรองข้อมูลตามกลุ่ม ID ที่บันทึกไว้
+  const handleFilterBySavedIds = () => {
+    if (isShowFiltered) {
+      setFilteredData(data); // แสดงข้อมูลทั้งหมด
+    } else {
+      const selectedIds = Object.values(groupedIds).flat();
+      const uniqueIds = [...new Set(selectedIds)];
+      setFilteredData(data.filter((item) => uniqueIds.includes(item.id)));
+    }
+    setIsShowFiltered(!isShowFiltered);
+  };
+
+  // ฟังก์ชันลบกลุ่มออกจาก groupedIds
+  const handleDeleteGroup = (group) => {
+    setGroupedIds((prevGroups) => {
+      const newGroups = { ...prevGroups };
+      delete newGroups[group];
+      return newGroups;
+    });
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -238,6 +309,34 @@ const Table3 = ({ data, columns }) => {
             ))}
           </Stack>
         </Paper>
+
+        {/* Dialog ให้กรอกชื่อกลุ่ม */}
+        <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
+          <DialogTitle>Save Filtered IDs</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Please enter a name for this group:
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Group Name"
+              type="text"
+              fullWidth
+              value={groupName}
+              onChange={(e) => setGroupName(e.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog}>Cancel</Button>
+            <Button
+              onClick={handleSaveFilteredIds}
+              disabled={!groupName.trim()}
+            >
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Stack>
     </LocalizationProvider>
   );
