@@ -86,14 +86,14 @@ const Table5 = ({ data, columns }) => {
       density: "compact",
       expanded: false, // ปิดการขยายกรุ๊ปเริ่มต้น
       grouping: [], // ไม่เลือกกรุ๊ปเริ่มต้น
-      pagination: { pageIndex: 0, pageSize: 20 },
+      pagination: { pageIndex: 0, pageSize: 30 },
       sorting: [{ id: "state", desc: false }],
     },
     enableRowSelection: true,
     enableStickyHeader: true,
     enableStickyFooter: true,
     positionToolbarAlertBanner: "bottom",
-    enableRowNumbers: false,
+    enableRowNumbers: true,
     isMultiSortEvent: () => true,
     maxMultiSortColCount: 3,
     columnFilterDisplayMode: "popover",
