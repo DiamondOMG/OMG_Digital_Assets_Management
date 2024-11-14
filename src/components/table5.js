@@ -39,6 +39,7 @@ const Table5 = ({ data, columns }) => {
   const [groupName, setGroupName] = useState("");
   const [isShowFiltered, setIsShowFiltered] = useState(false);
   const [filteredData, setFilteredData] = useState(data); // เพิ่มตัวแปร state ของ filteredData
+
   //reponsive
   const isMobile = useMediaQuery("(max-width: 1000px)");
   //ฟังชั่นเปิดขปิดเมนู
@@ -49,12 +50,18 @@ const Table5 = ({ data, columns }) => {
   const handleCloseMenu = (setter) => () => {
     setter(null);
   };
+  //View
+  const view1 = {
+    filters: [{ id: "gender", value: "Male" }],
+    sorting: [{ id: "lastName", desc: false }],
+    group: ["gender"],
+  };
 
   // สร้าง table instance
   const table = useMaterialReactTable({
     columns,
     data: filteredData, // Using filteredData in the table
-    ///Group
+    ///Group//////////////////////
     displayColumnDefOptions: {
       "mrt-row-expand": {
         Header: () => (
@@ -65,7 +72,7 @@ const Table5 = ({ data, columns }) => {
         ),
         GroupedCell: ({ row, table }) => {
           const { grouping } = table.getState();
-          return row.getValue(grouping[grouping.length - 1]); // แสดงกรุ๊ปเฉพาะใน Cell โดยไม่เพิ่มแถวใหม่
+          return row.getValue(grouping[grouping.length - 1]);
         },
         enableResizing: true,
         muiTableBodyCellProps: ({ row }) => ({
@@ -83,42 +90,53 @@ const Table5 = ({ data, columns }) => {
     },
     enableGrouping: true,
     enableColumnResizing: true,
-    groupedColumnMode: "remove", // ลบคอลัมน์กรุ๊ปออกจากตารางหลัก
+    groupedColumnMode: "remove",
     ////ค่าเริ่มต้น
     initialState: {
       density: "compact",
       expanded: true, // ปิดการขยายกรุ๊ปเริ่มต้น
-      grouping: [], // ไม่เลือกกรุ๊ปเริ่มต้น
-      sorting: [],
-      filter: [],
+      grouping: view1.group, // ไม่เลือกกรุ๊ปเริ่มต้น
+      sorting: view1.sorting, // ใช้ sorting จาก view1
+      columnFilters: view1.filters,
       pagination: { pageIndex: 0, pageSize: 30 },
     },
     ///
     enableRowSelection: true, //check box
     enableStickyHeader: true, // ล็อคหัว
-    enableStickyFooter: true, //ล็อคล่าง
-    positionToolbarAlertBanner: "bottom", //แจ้งเตือน
+    positionToolbarAlertBanner: "top", //แจ้งเตือนถ้าอยากให้ group ไปข้างล่างก็bottomซะ
     enableRowNumbers: true, // เลขแถว
     ///
     isMultiSortEvent: () => true,
     maxMultiSortColCount: 3,
     columnFilterDisplayMode: "popover",
     paginationDisplayMode: "pages",
-    /// แก้ text กับ styl
+    /// แก้ text กับ style
     muiFilterTextFieldProps: ({ column }) => ({
       label: `Filter by ${column.columnDef.header}`,
       sx: {
         "& .MuiInputLabel-root": {
-          color: "", // เปลี่ยนสีของ label เป็นฟ้า
+          color: "",
         },
         "& .MuiInputBase-root": {
-          borderColor: "", // เปลี่ยนสีกรอบของ TextField เป็นฟ้า
+          borderColor: "",
         },
         "& .MuiInputBase-input": {
           color: "blue", // เปลี่ยนสีข้อความภายใน TextField เป็นฟ้า
         },
       },
     }),
+    ///ตารางยืดดด
+    layoutMode: "grid", // ทำให้ตารางยืดตามจำนวนแถวใน page
+    muiTableBodyProps: {
+      sx: {
+        overflow: "unset", // ยกเลิกการเลื่อนอัตโนมัติในแนวตั้ง
+      },
+    },
+    muiTableContainerProps: {
+      sx: {
+        maxHeight: "unset", // ตั้งค่า maxHeight เป็น 'unset' เพื่อให้ตารางไม่จำกัดความสูง
+      },
+    },
     /// แถบ toolbar
     renderTopToolbarCustomActions: ({ table }) => (
       <Box
@@ -291,7 +309,7 @@ const Table5 = ({ data, columns }) => {
     ),
   });
 
-  ////////ฟังชั่นเพิ่ม merge filter//////
+  ////////ฟังชั่นเพิ่ม merge filter/////////////////////////////////////////////////////////////////
   // เปิด-ปิด Dialog
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
@@ -332,6 +350,14 @@ const Table5 = ({ data, columns }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Stack direction={isMobile ? "column-reverse" : "row"} gap="8px">
+        <Paper>
+          <Stack
+            direction="column"
+            spacing={2}
+            alignItems="center"
+            p="100px"
+          ></Stack>
+        </Paper>
         {/* Table หลัก */}
         <MaterialReactTable table={table} />
         {/* Filter ด้านขวา */}

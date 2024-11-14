@@ -1,113 +1,95 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   MaterialReactTable,
-  MRT_ExpandAllButton,
   useMaterialReactTable,
 } from "material-react-table";
-import { Box, Stack } from "@mui/material";
 
 const Example = () => {
-  const [data, setData] = useState([]); // ใช้ useState เพื่อเก็บข้อมูล
-
-  // กำหนดคอลัมน์ของตาราง
-  const columns = [
-    { header: "First Name", accessorKey: "firstName" },
-    { header: "Last Name", accessorKey: "lastName" },
-    { header: "Age", accessorKey: "age" },
-    { header: "Gender", accessorKey: "gender" },
-    { header: "State", accessorKey: "state" },
-    { header: "Salary", accessorKey: "salary" },
+  // สร้าง mock data
+  const sampleData = [
+    {
+      firstName: "John",
+      lastName: "Doe",
+      address: "123 Main St",
+      state: "CA",
+      phoneNumber: "123-456-7890",
+    },
+    {
+      firstName: "Jane",
+      lastName: "Smith",
+      address: "456 Elm St",
+      state: "NY",
+      phoneNumber: "987-654-3210",
+    },
+    {
+      firstName: "Mike",
+      lastName: "Johnson",
+      address: "789 Oak St",
+      state: "TX",
+      phoneNumber: "456-789-0123",
+    },
+    // เพิ่มข้อมูลเพิ่มเติมหากต้องการ
   ];
 
-  // ใช้ useEffect เพื่อดึงข้อมูลหรือทำงานเมื่อมีการโหลดหน้า
-  useEffect(() => {
-    // ตัวอย่างข้อมูลที่จำลองการดึงข้อมูลจาก API
-    const fetchData = async () => {
-      const dataFromAPI = [
-        {
-          firstName: "John",
-          lastName: "Doe",
-          age: 30,
-          gender: "Male",
-          state: "California",
-          salary: 60000,
-        },
-        {
-          firstName: "Jane",
-          lastName: "Smith",
-          age: 25,
-          gender: "Female",
-          state: "Texas",
-          salary: 50000,
-        },
-        {
-          firstName: "Michael",
-          lastName: "Johnson",
-          age: 40,
-          gender: "Male",
-          state: "Florida",
-          salary: 70000,
-        },
-        {
-          firstName: "Emily",
-          lastName: "Davis",
-          age: 35,
-          gender: "Female",
-          state: "New York",
-          salary: 55000,
-        },
-      ];
-      setData(dataFromAPI); // ตั้งค่าข้อมูลใน state
-    };
+  // สถานะตาราง
+  const [data, setData] = useState(sampleData);
+  const [columnFilters, setColumnFilters] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [sorting, setSorting] = useState([]);
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
-    fetchData(); // เรียกใช้งานฟังก์ชันดึงข้อมูล
-  }, []); // useEffect จะทำงานเพียงครั้งเดียวเมื่อ component mount
+  const columns = useMemo(
+    () => [
+      { accessorKey: "firstName", header: "First Name" },
+      { accessorKey: "lastName", header: "Last Name" },
+      { accessorKey: "address", header: "Address" },
+      { accessorKey: "state", header: "State" },
+      { accessorKey: "phoneNumber", header: "Phone Number" },
+    ],
+    []
+  );
 
-  // ใช้ useMaterialReactTable เพื่อสร้างตาราง
+  // การตั้งค่าตาราง
   const table = useMaterialReactTable({
     columns,
     data,
-    displayColumnDefOptions: {
-      "mrt-row-expand": {
-        Header: () => (
-          <Stack direction="row" alignItems="center">
-            <MRT_ExpandAllButton table={table} />
-            <Box>Groups</Box>
-          </Stack>
-        ),
-        GroupedCell: ({ row, table }) => {
-          const { grouping } = table.getState();
-          return row.getValue(grouping[grouping.length - 1]);
-        },
-        enableResizing: true,
-        muiTableBodyCellProps: ({ row }) => ({
-          sx: (theme) => ({
-            color:
-              row.depth === 0
-                ? theme.palette.primary.main
-                : row.depth === 1
-                ? theme.palette.secondary.main
-                : undefined,
-          }),
-        }),
-        size: 200,
-      },
-    },
-    enableGrouping: true,
-    enableColumnResizing: true,
-    groupedColumnMode: "remove",
-    initialState: {
-      density: "compact",
-      expanded: true,
-      grouping: [],
-      pagination: { pageIndex: 0, pageSize: 20 },
-      sorting: [{ id: "state", desc: false }],
+    enableRowSelection: true,
+    getRowId: (row) => row.phoneNumber,
+    initialState: { showColumnFilters: true },
+    manualFiltering: true,
+    manualPagination: true,
+    manualSorting: true,
+    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
+    onPaginationChange: setPagination,
+    onSortingChange: setSorting,
+    state: {
+      columnFilters,
+      globalFilter,
+      pagination,
+      sorting,
     },
   });
 
-  // Render ตาราง MaterialReactTable
-  return <MaterialReactTable table={table} />;
+  // ฟังก์ชันสำหรับแสดงค่า filters และ sorting ใน console
+  const handleShowCurrentState = () => {
+    console.log("Column Filters:", columnFilters);
+    console.log("Global Filter:", globalFilter);
+    console.log("Sorting:", sorting);
+  };
+
+  return (
+    <div>
+      <MaterialReactTable table={table} />
+      <button onClick={handleShowCurrentState} style={{ marginTop: "10px" }}>
+        Show Current Filters & Sorting
+      </button>
+    </div>
+  );
 };
 
 export default Example;

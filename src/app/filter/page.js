@@ -8,7 +8,7 @@ import Table5 from "@/components/table5";
 
 const InventoryPage = () => {
   const [data, setData] = useState(null); // สร้าง state สำหรับเก็บข้อมูลสินค้า
-  const [view, setView] = useState(null)
+  const [view, setView] = useState(null);
 
   useEffect(() => {
     // จำลองข้อมูลสินค้าในคลัง
@@ -664,8 +664,9 @@ const InventoryPage = () => {
 
   // แสดงข้อมูลเมื่อโหลดสำเร็จ
   return (
-    <div>
-      <Table5 data={data} columns={columns} view={view} setView={setView}/>
+    <div className="d-flex flex-column">
+      <div style={{ height: "100px" }}></div> {/* สำหรับความสูงเต็มหน้าจอ */}
+      <Table5 data={data} columns={columns} view={view} setView={setView} />
     </div>
   );
 };
