@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useMemo, useState } from "react";
 import {
   MaterialReactTable,
@@ -58,11 +59,6 @@ const Example = () => {
     columns,
     data,
     enableRowSelection: true,
-    getRowId: (row) => row.phoneNumber,
-    initialState: { showColumnFilters: true },
-    manualFiltering: true,
-    manualPagination: true,
-    manualSorting: true,
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
