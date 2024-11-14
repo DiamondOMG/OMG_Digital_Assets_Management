@@ -4,15 +4,16 @@ import { useState, useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './globals.css';
 import styles from './page.module.css'
-import Link from 'next/link';
+import Link from 'next/link'; 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation'; // ใช้ next/navigation สำหรับ App Router
 
 const Login = () => {
 	const [username, setUsername] = useState(''); // เก็บค่า username
 	const [password, setPassword] = useState(''); // เก็บค่า password
+	const router = useRouter();
 
 	useEffect(() => {
-
 	}, []); // ใช้ useEffect โดยมี dependency เป็น array ว่าง เพื่อให้ดึงข้อมูลแค่ครั้งเดียวตอน mount
 
 	  // ฟังก์ชันจัดการเมื่อกด submit ฟอร์ม
@@ -20,6 +21,7 @@ const Login = () => {
 		e.preventDefault();
 		console.log("Username:", username);
 		console.log("Password:", password);
+		router.push('/'); // เปลี่ยน '/home' เป็น URL ที่ต้องการ
 	  };
 
 	return (
@@ -38,6 +40,7 @@ const Login = () => {
 						placeholder="username"   
 						value={username}  
 						onChange={(e) => setUsername(e.target.value)} // อัปเดตค่า username
+						required
 					/>
 
 				</div>
@@ -49,6 +52,7 @@ const Login = () => {
 						placeholder="password" 
 						value={password} 
 						onChange={(e) => setPassword(e.target.value)} // อัปเดตค่า password
+						required
 					/>
 				</div>
 				<button type="submit" className={`btn  w-100 rounded-pill   ${styles.loginButton, styles.loginBtn}`}>Login</button>
@@ -70,7 +74,7 @@ const Login = () => {
 				</div>
 				<h3>Welcome to Login</h3>
 				<p>Don’t have an account?</p>
-				<Link href="#" className={`${styles.registerButton}  btn btn-outline-light rounded-pill`} style={{width:'30%'}}>
+				<Link href="/register" className={`${styles.registerButton}  btn btn-outline-light rounded-pill`} style={{width:'30%'}}>
 				   Register
 				</Link>
 			</div>
