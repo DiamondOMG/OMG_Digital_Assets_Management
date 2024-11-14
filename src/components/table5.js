@@ -30,16 +30,18 @@ import { exportExcel } from "@/utils/exportExcel";
 import { MRT_ExpandAllButton } from "material-react-table";
 
 const Table5 = ({ data, columns }) => {
-  const [anchorElCsv, setAnchorElCsv] = useState(null);
-  const [anchorElPdf, setAnchorElPdf] = useState(null);
-  const [anchorElExcel, setAnchorElExcel] = useState(null);
+  const [anchorElCsv, setAnchorElCsv] = useState(null); //ใช้ในการเปิดปิดเมนู
+  const [anchorElPdf, setAnchorElPdf] = useState(null); //ใช้ในการเปิดปิดเมนู
+  const [anchorElExcel, setAnchorElExcel] = useState(null); //ใช้ในการเปิดปิดเมนู
 
   const [groupedIds, setGroupedIds] = useState({});
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [groupName, setGroupName] = useState("");
   const [isShowFiltered, setIsShowFiltered] = useState(false);
   const [filteredData, setFilteredData] = useState(data); // เพิ่มตัวแปร state ของ filteredData
-
+  //reponsive
+  const isMobile = useMediaQuery("(max-width: 1000px)");
+  //ฟังชั่นเปิดขปิดเมนู
   const handleOpenMenu = (setter) => (event) => {
     setter(event.currentTarget);
   };
@@ -47,12 +49,12 @@ const Table5 = ({ data, columns }) => {
   const handleCloseMenu = (setter) => () => {
     setter(null);
   };
-  const isMobile = useMediaQuery("(max-width: 1000px)");
 
   // สร้าง table instance
   const table = useMaterialReactTable({
     columns,
     data: filteredData, // Using filteredData in the table
+    ///Group
     displayColumnDefOptions: {
       "mrt-row-expand": {
         Header: () => (
@@ -82,25 +84,42 @@ const Table5 = ({ data, columns }) => {
     enableGrouping: true,
     enableColumnResizing: true,
     groupedColumnMode: "remove", // ลบคอลัมน์กรุ๊ปออกจากตารางหลัก
+    ////ค่าเริ่มต้น
     initialState: {
       density: "compact",
-      expanded: false, // ปิดการขยายกรุ๊ปเริ่มต้น
+      expanded: true, // ปิดการขยายกรุ๊ปเริ่มต้น
       grouping: [], // ไม่เลือกกรุ๊ปเริ่มต้น
+      sorting: [],
+      filter: [],
       pagination: { pageIndex: 0, pageSize: 30 },
-      sorting: [{ id: "state", desc: false }],
     },
-    enableRowSelection: true,
-    enableStickyHeader: true,
-    enableStickyFooter: true,
-    positionToolbarAlertBanner: "bottom",
-    enableRowNumbers: true,
+    ///
+    enableRowSelection: true, //check box
+    enableStickyHeader: true, // ล็อคหัว
+    enableStickyFooter: true, //ล็อคล่าง
+    positionToolbarAlertBanner: "bottom", //แจ้งเตือน
+    enableRowNumbers: true, // เลขแถว
+    ///
     isMultiSortEvent: () => true,
     maxMultiSortColCount: 3,
     columnFilterDisplayMode: "popover",
     paginationDisplayMode: "pages",
+    /// แก้ text กับ styl
     muiFilterTextFieldProps: ({ column }) => ({
       label: `Filter by ${column.columnDef.header}`,
+      sx: {
+        "& .MuiInputLabel-root": {
+          color: "", // เปลี่ยนสีของ label เป็นฟ้า
+        },
+        "& .MuiInputBase-root": {
+          borderColor: "", // เปลี่ยนสีกรอบของ TextField เป็นฟ้า
+        },
+        "& .MuiInputBase-input": {
+          color: "blue", // เปลี่ยนสีข้อความภายใน TextField เป็นฟ้า
+        },
+      },
     }),
+    /// แถบ toolbar
     renderTopToolbarCustomActions: ({ table }) => (
       <Box
         sx={{
@@ -268,32 +287,12 @@ const Table5 = ({ data, columns }) => {
             Export Selected Rows
           </MenuItem>
         </Menu>
-
-        {/* ปุ่มและ Dialog สำหรับจัดการกลุ่ม */}
-        <Stack direction="row" spacing={2} alignItems="center">
-          <Button variant="contained" onClick={() => setIsDialogOpen(true)}>
-            Save Filtered IDs
-          </Button>
-
-          <Button variant="contained" onClick={handleFilterBySavedIds}>
-            {isShowFiltered ? "Show All" : "Show Only Saved IDs"}
-          </Button>
-
-          {Object.keys(groupedIds).map((group) => (
-            <Chip
-              key={group}
-              label={group}
-              onDelete={() => handleDeleteGroup(group)}
-              sx={{ borderRadius: "16px" }} // ขอบมล
-            />
-          ))}
-        </Stack>
       </Box>
     ),
   });
 
+  ////////ฟังชั่นเพิ่ม merge filter//////
   // เปิด-ปิด Dialog
-  const handleOpenDialog = () => setIsDialogOpen(true);
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
     setGroupName("");
@@ -333,9 +332,45 @@ const Table5 = ({ data, columns }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Stack direction={isMobile ? "column-reverse" : "row"} gap="8px">
+        {/* Table หลัก */}
         <MaterialReactTable table={table} />
+        {/* Filter ด้านขวา */}
         <Paper>
           <Stack p="8px" gap="8px">
+            {/* ปุ่มและ Dialog สำหรับจัดการกลุ่ม */}
+            <Stack direction="column" spacing={2} alignItems="center">
+              {/* กล่องบน: ปุ่ม 2 ปุ่ม */}
+              <Box>
+                <Stack direction="row" spacing={2} alignItems="center">
+                  <Button
+                    variant="contained"
+                    onClick={() => setIsDialogOpen(true)}
+                  >
+                    Save Filtered
+                  </Button>
+
+                  <Button
+                    variant="contained"
+                    onClick={handleFilterBySavedIds}
+                    sx={{ ml: 2 }}
+                  >
+                    {isShowFiltered ? "Show All" : "Show Saved"}
+                  </Button>
+                </Stack>
+              </Box>
+
+              {/* กล่องล่าง: Chips */}
+              <Box>
+                {Object.keys(groupedIds).map((group) => (
+                  <Chip
+                    key={group}
+                    label={group}
+                    onDelete={() => handleDeleteGroup(group)}
+                    sx={{ borderRadius: "16px", m: 0.5 }} // เพิ่มช่องว่างเล็กน้อยรอบ ๆ ชิป
+                  />
+                ))}
+              </Box>
+            </Stack>
             {table.getLeafHeaders().map((header) => (
               <MRT_TableHeadCellFilterContainer
                 key={header.id}
@@ -346,7 +381,6 @@ const Table5 = ({ data, columns }) => {
             ))}
           </Stack>
         </Paper>
-
         {/* Dialog ให้กรอกชื่อกลุ่ม */}
         <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
           <DialogTitle>Save Filtered IDs</DialogTitle>
