@@ -18,13 +18,13 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  font-family: "Kanit", serif !important;
+  font-family: "Kanit", sans-serif !important;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: "Kanit", serif;
+  font-family: "Kanit", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -45,60 +45,3 @@ a {
     color-scheme: dark;
   }
 }
-
-
-
-
-/* styles/Login.module.css */
-.loginContainer {
-  height: 100vh;
-  background-color: #f2f2f2;
-    font-family: "Kanit", serif !important;
-}
-
-.loginBox {
-  max-width: 900px;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.welcomeBox {
-  background-color: #6c757d;
-  color: #ffffff;
-  text-align: center;
-  padding: 3rem 2rem;
-}
-
-.welcomeBox .logo {
-  background-color: #aaa;
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  color: #fff;
-}
-
-.loginButton {
-  background-color: #6c757d;
-  border: none;
-}
-
-.registerButton {
-  border-color: #fff;
-  color: #fff;
-}
-
-@media (max-width: 768px) {
-  .loginBox {
-    flex-direction: column;
-  }
-
-  .welcomeBox {
-    padding: 2rem 1rem;
-  }
-}
-
