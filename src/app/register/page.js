@@ -17,7 +17,8 @@ const Register = () => {
     const [bu, setBu] = useState('');
     const [position, setPosition] = useState('');
 
-    const router = useRouter(); //ใช้ redirect page
+    //ใช้ redirect page
+    const router = useRouter(); 
 
 
   const handleRegister = (e) => {

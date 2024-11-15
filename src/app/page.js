@@ -21,7 +21,7 @@ const Login = () => {
 		e.preventDefault();
 		console.log("Username:", username);
 		console.log("Password:", password);
-		router.push('/'); // เปลี่ยน '/home' เป็น URL ที่ต้องการ
+		router.push('/home'); // เปลี่ยน '/home' เป็น URL ที่ต้องการ
 	  };
 
 	return (
