@@ -8,7 +8,21 @@ import Table5 from "@/components/table5";
 
 const InventoryPage = () => {
   const [data, setData] = useState(null); // สร้าง state สำหรับเก็บข้อมูลสินค้า
-  const [view, setView] = useState(null);
+  const [views, setViews] = useState([
+    {
+      name: "7777",
+      filters: [{ id: "age", value: "30" }],
+      sorting: [],
+      group: ["age"],
+    },
+    {
+      name: "555",
+      filters: [{ id: "gender", value: "Female" }],
+      sorting: [],
+      group: ["gender"],
+    },
+    // เพิ่ม views ตามโครงสร้างข้อมูล
+  ]);
 
   useEffect(() => {
     // จำลองข้อมูลสินค้าในคลัง
@@ -666,7 +680,7 @@ const InventoryPage = () => {
   return (
     <div className="d-flex flex-column">
       <div style={{ height: "100px" }}></div> {/* สำหรับความสูงเต็มหน้าจอ */}
-      <Table5 data={data} columns={columns} view={view} setView={setView} />
+      <Table5 data={data} columns={columns} views={views} setViews={setViews} />
     </div>
   );
 };
