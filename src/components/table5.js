@@ -29,16 +29,23 @@ import { exportPdf } from "@/utils/exportPdf"; // นำเข้าฟังก
 import { exportExcel } from "@/utils/exportExcel";
 import { MRT_ExpandAllButton } from "material-react-table";
 
-const Table5 = ({ data, columns }) => {
+const Table5 = ({ data, columns, views, setViews }) => {
   const [anchorElCsv, setAnchorElCsv] = useState(null); //ใช้ในการเปิดปิดเมนู
   const [anchorElPdf, setAnchorElPdf] = useState(null); //ใช้ในการเปิดปิดเมนู
   const [anchorElExcel, setAnchorElExcel] = useState(null); //ใช้ในการเปิดปิดเมนู
 
   const [groupedIds, setGroupedIds] = useState({});
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
+  const [viewName, setViewName] = useState("");
   const [groupName, setGroupName] = useState("");
   const [isShowFiltered, setIsShowFiltered] = useState(false);
   const [filteredData, setFilteredData] = useState(data); // เพิ่มตัวแปร state ของ filteredData
+
+  //save view
+  const [columnFilters, setColumnFilters] = useState([]);
+  const [sorting, setSorting] = useState([]);
+  const [grouping, setGrouping] = useState([]);
 
   //reponsive
   const isMobile = useMediaQuery("(max-width: 1000px)");
@@ -50,18 +57,12 @@ const Table5 = ({ data, columns }) => {
   const handleCloseMenu = (setter) => () => {
     setter(null);
   };
-  //View
-  const view1 = {
-    filters: [{ id: "gender", value: "Male" }],
-    sorting: [{ id: "lastName", desc: false }],
-    group: ["gender"],
-  };
 
   // สร้าง table instance
   const table = useMaterialReactTable({
     columns,
     data: filteredData, // Using filteredData in the table
-    ///Group//////////////////////
+    ///Group---------------------------------------------------------------
     displayColumnDefOptions: {
       "mrt-row-expand": {
         Header: () => (
@@ -91,13 +92,10 @@ const Table5 = ({ data, columns }) => {
     enableGrouping: true,
     enableColumnResizing: true,
     groupedColumnMode: "remove",
-    ////ค่าเริ่มต้น
+    ///ค่าเริ่มต้น-------------------------------------------------------------------------
     initialState: {
       density: "compact",
       expanded: true, // ปิดการขยายกรุ๊ปเริ่มต้น
-      grouping: view1.group, // ไม่เลือกกรุ๊ปเริ่มต้น
-      sorting: view1.sorting, // ใช้ sorting จาก view1
-      columnFilters: view1.filters,
       pagination: { pageIndex: 0, pageSize: 30 },
     },
     ///
@@ -125,7 +123,7 @@ const Table5 = ({ data, columns }) => {
         },
       },
     }),
-    ///ตารางยืดดด
+    ///ตารางยืดดด-------------------------------------------------------------------------------------
     layoutMode: "grid", // ทำให้ตารางยืดตามจำนวนแถวใน page
     muiTableBodyProps: {
       sx: {
@@ -137,7 +135,16 @@ const Table5 = ({ data, columns }) => {
         maxHeight: "unset", // ตั้งค่า maxHeight เป็น 'unset' เพื่อให้ตารางไม่จำกัดความสูง
       },
     },
-    /// แถบ toolbar
+    /// save view----------------------------------------------------------------------------
+    onColumnFiltersChange: setColumnFilters,
+    onSortingChange: setSorting,
+    onGroupingChange: setGrouping,
+    state: {
+      columnFilters,
+      sorting,
+      grouping,
+    },
+    /// แถบ toolbar-------------------------------------------------------------------------------------------
     renderTopToolbarCustomActions: ({ table }) => (
       <Box
         sx={{
@@ -309,7 +316,7 @@ const Table5 = ({ data, columns }) => {
     ),
   });
 
-  ////////ฟังชั่นเพิ่ม merge filter/////////////////////////////////////////////////////////////////
+  ///ฟังชั่นเพิ่ม merge filter-------------------------------------------------------------------
   // เปิด-ปิด Dialog
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
@@ -346,24 +353,97 @@ const Table5 = ({ data, columns }) => {
       return newGroups;
     });
   };
+  ///ฟังชั่น สำหรับสร้าง view ใหม่และเพิ่มใน views-----------------------------------------------------------------------
+  // เปิด-ปิด Dialog
+  const handleCloseViewDialog = () => {
+    setIsViewDialogOpen(false);
+    setViewName("");
+  };
+
+  const handleAddView = () => {
+    const newView = {
+      name: viewName,
+      filters: [...columnFilters],
+      sorting: [...sorting],
+      group: [...grouping], // สามารถเพิ่ม group field อื่นๆ ที่ต้องการได้
+    };
+
+    // เพิ่ม view ใหม่เข้าไปใน views array และ log views หลังอัปเดต
+    setViews((prevViews) => {
+      const updatedViews = [...prevViews, newView];
+      console.log(updatedViews); // แสดง views หลังจากถูกอัปเดต
+      return updatedViews;
+    });
+
+    handleCloseViewDialog();
+  };
+
+  const handleButtonClick = (view) => {
+    setColumnFilters(view.filters);
+    setSorting(view.sorting);
+    setGrouping(view.group);
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Stack direction={isMobile ? "column-reverse" : "row"} gap="8px">
-        <Paper>
+        <Paper sx={{ width: "900px" }}>
+          <Stack direction="column" spacing={2} alignItems="center" p="8px">
+            <Button
+              variant="contained"
+              onClick={() => setIsViewDialogOpen(true)}
+            >
+              Add View
+            </Button>
+          </Stack>
+		  {/* ------------------- Map ---------------------- */}
           <Stack
-            direction="column"
             spacing={2}
+            direction="column"
             alignItems="center"
-            p="100px"
-          ></Stack>
+            padding="20px"
+          >
+            {views.map((view, index) => (
+              <Button
+                key={index}
+                variant="contained"
+                onClick={() => handleButtonClick(view)}
+              >
+                {view.name}
+              </Button>
+            ))}
+          </Stack>
         </Paper>
-        {/* Table หลัก */}
+		{/* -------------------- Dialog View -------------------- */}
+        <Dialog open={isViewDialogOpen} onClose={handleCloseViewDialog}>
+          <DialogTitle>Save Youre View</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Please enter a name for this View:
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="View Name"
+              type="text"
+              fullWidth
+              value={viewName}
+              onChange={(e) => setViewName(e.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseViewDialog}>Cancel</Button>
+            <Button onClick={handleAddView} disabled={!viewName.trim()}>
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
+        {/* Table หลัก -----------------------------------------------------------------*/}
         <MaterialReactTable table={table} />
-        {/* Filter ด้านขวา */}
+        {/* Filter ด้านขวา ---------------------------------------------------------------*/}
         <Paper>
           <Stack p="8px" gap="8px">
-            {/* ปุ่มและ Dialog สำหรับจัดการกลุ่ม */}
+            {/* ปุ่มและ Dialog สำหรับจัดการกลุ่ม----------------------------------- */}
             <Stack direction="column" spacing={2} alignItems="center">
               {/* กล่องบน: ปุ่ม 2 ปุ่ม */}
               <Box>
@@ -397,6 +477,35 @@ const Table5 = ({ data, columns }) => {
                 ))}
               </Box>
             </Stack>
+            {/* Dialog ให้กรอกชื่อกลุ่ม --------------------------------------------*/}
+            <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
+              <DialogTitle>Save Filtered IDs</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Please enter a name for this group:
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  label="Group Name"
+                  type="text"
+                  fullWidth
+                  value={groupName}
+                  onChange={(e) => setGroupName(e.target.value)}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseDialog}>Cancel</Button>
+                <Button
+                  onClick={handleSaveFilteredIds}
+                  disabled={!groupName.trim()}
+                >
+                  Save
+                </Button>
+              </DialogActions>
+            </Dialog>
+            {/*  */}
+            {/* filter sidebar --------------------------------------------------------------- */}
             {table.getLeafHeaders().map((header) => (
               <MRT_TableHeadCellFilterContainer
                 key={header.id}
@@ -407,33 +516,6 @@ const Table5 = ({ data, columns }) => {
             ))}
           </Stack>
         </Paper>
-        {/* Dialog ให้กรอกชื่อกลุ่ม */}
-        <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
-          <DialogTitle>Save Filtered IDs</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Please enter a name for this group:
-            </DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Group Name"
-              type="text"
-              fullWidth
-              value={groupName}
-              onChange={(e) => setGroupName(e.target.value)}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog}>Cancel</Button>
-            <Button
-              onClick={handleSaveFilteredIds}
-              disabled={!groupName.trim()}
-            >
-              Save
-            </Button>
-          </DialogActions>
-        </Dialog>
       </Stack>
     </LocalizationProvider>
   );
