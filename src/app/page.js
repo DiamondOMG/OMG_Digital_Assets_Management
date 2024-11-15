@@ -21,7 +21,7 @@ const Login = () => {
 		e.preventDefault();
 		console.log("Username:", username);
 		console.log("Password:", password);
-		router.push('/home'); // เปลี่ยน '/home' เป็น URL ที่ต้องการ
+		router.push('/assets'); // เปลี่ยน '/home' เป็น URL ที่ต้องการ
 	  };
 
 	return (
@@ -40,7 +40,6 @@ const Login = () => {
 						placeholder="username"   
 						value={username}  
 						onChange={(e) => setUsername(e.target.value)} // อัปเดตค่า username
-						required
 					/>
 
 				</div>
@@ -52,7 +51,6 @@ const Login = () => {
 						placeholder="password" 
 						value={password} 
 						onChange={(e) => setPassword(e.target.value)} // อัปเดตค่า password
-						required
 					/>
 				</div>
 				<button type="submit" className={`btn  w-100 rounded-pill   ${styles.loginButton, styles.loginBtn}`}>Login</button>
