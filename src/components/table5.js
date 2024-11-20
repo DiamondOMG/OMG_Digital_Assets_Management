@@ -396,7 +396,7 @@ const Table5 = ({ data, columns, views, setViews }) => {
               Add View
             </Button>
           </Stack>
-		  {/* ------------------- Map ---------------------- */}
+          {/* ------------------- Map ---------------------- */}
           <Stack
             spacing={2}
             direction="column"
@@ -414,7 +414,7 @@ const Table5 = ({ data, columns, views, setViews }) => {
             ))}
           </Stack>
         </Paper>
-		{/* -------------------- Dialog View -------------------- */}
+        {/* -------------------- Dialog View -------------------- */}
         <Dialog open={isViewDialogOpen} onClose={handleCloseViewDialog}>
           <DialogTitle>Save Youre View</DialogTitle>
           <DialogContent>
@@ -452,7 +452,7 @@ const Table5 = ({ data, columns, views, setViews }) => {
                     variant="contained"
                     onClick={() => setIsDialogOpen(true)}
                   >
-                    Save Filtered
+                    Merge Filtered
                   </Button>
 
                   <Button
@@ -460,7 +460,7 @@ const Table5 = ({ data, columns, views, setViews }) => {
                     onClick={handleFilterBySavedIds}
                     sx={{ ml: 2 }}
                   >
-                    {isShowFiltered ? "Show All" : "Show Saved"}
+                    {isShowFiltered ? "Show All" : "Show Merge"}
                   </Button>
                 </Stack>
               </Box>
@@ -506,14 +506,19 @@ const Table5 = ({ data, columns, views, setViews }) => {
             </Dialog>
             {/*  */}
             {/* filter sidebar --------------------------------------------------------------- */}
-            {table.getLeafHeaders().map((header) => (
-              <MRT_TableHeadCellFilterContainer
-                key={header.id}
-                header={header}
-                table={table}
-                in
-              />
-            ))}
+            {table
+              .getLeafHeaders()
+              .map(
+                (header) =>
+                  header.id !== "mrt-row-select" &&
+                  header.id !== "mrt-row-numbers" && (
+                    <MRT_TableHeadCellFilterContainer
+                      key={header.id}
+                      header={header}
+                      table={table}
+                    />
+                  )
+              )}
           </Stack>
         </Paper>
       </Stack>
