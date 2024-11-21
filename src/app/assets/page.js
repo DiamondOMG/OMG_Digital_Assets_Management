@@ -7,8 +7,11 @@ import Table4 from "@/components/table4";
 import Table5 from "@/components/table5";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import Loader2 from "@/components/loader2";
+import ProtectedRoute from "@/components/ProtectedRoute";  // Protect route if user don't have token 
 
 const Assets = () => {
+
   const [data, setData] = useState(null); // สร้าง state สำหรับเก็บข้อมูลสินค้า
   const [views, setViews] = useState([
     {
@@ -26,7 +29,9 @@ const Assets = () => {
     // เพิ่ม views ตามโครงสร้างข้อมูล
   ]);
 
+
   useEffect(() => {
+
     // จำลองข้อมูลสินค้าในคลัง
     const inventoryData = [
       {
@@ -634,9 +639,9 @@ const Assets = () => {
   }, []);
 
 
-  // กรณีข้อมูลยังไม่ถูกโหลด
+  // กรณีข้อมูลยังไม่ถูกโหลด จะแสดง Loader
   if (!data) {
-    return <Loader />;
+    return <Loader2 />;
   }
 
   const columns = [
@@ -682,11 +687,13 @@ const Assets = () => {
   // แสดงข้อมูลเมื่อโหลดสำเร็จ
   return (
     <>
+    <ProtectedRoute>
     <Header/>
     <div className="d-flex flex-column py-5">
       <Table5 data={data} columns={columns} views={views} setViews={setViews} />
     </div> 
     <Footer/>
+    </ProtectedRoute>
     </>
 
   );

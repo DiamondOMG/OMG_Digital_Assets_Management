@@ -7,7 +7,7 @@ import {
 } from "material-react-table";
 import {
   Paper,
-  Stack,
+  Stack, 
   useMediaQuery,
   Box,
   Button,

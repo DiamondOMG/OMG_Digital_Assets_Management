@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Link from 'next/link';
 import './style/header.css';
+import { useRouter } from 'next/navigation'; // ใช้ next/navigation สำหรับ App Router
 
 const Header = () => {
     const [showAccount, setShowAccount] = useState(false);
@@ -20,6 +21,19 @@ const Header = () => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
             setShowAccount(false);
         }
+    };
+
+    const router = useRouter();   // คำสั่งสำหรับ redirect page   
+    const handleLogout = () => {
+        // ลบข้อมูลทั้งหมดใน localStorage
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("username");
+        localStorage.removeItem("name");
+        localStorage.removeItem("department");
+        localStorage.removeItem("position");
+    
+        // เปลี่ยนเส้นทางกลับไป login
+         router.push('/');
     };
 
     useEffect(() => {
@@ -74,7 +88,7 @@ const Header = () => {
                                 >
                                     <Link href="#" className="dropdown-item"><i className="bi bi-person"></i> Profile</Link>
                                     <Link href="#" className="dropdown-item"><i className="bi bi-person-check"></i> Permission</Link>
-                                    <Link href="/" className="dropdown-item"><i className="bi bi-box-arrow-right"></i> Logout</Link>
+                                    <Link href="/" className="dropdown-item" onClick={handleLogout}><i className="bi bi-box-arrow-right"></i> Logout</Link>
                                 </div>
                             )}
                         </div>
@@ -150,3 +164,4 @@ const Header = () => {
 };
 
 export default Header;
+ 

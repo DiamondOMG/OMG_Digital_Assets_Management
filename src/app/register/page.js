@@ -2,11 +2,12 @@
 
 // pages/register.js
 import React from 'react';
-import { useState} from "react";
+import { useState,useEffect} from "react";
 import Link from 'next/link';
 import styles from './register.module.css';  // css module แยกตาม component
 import Image from 'next/image';  // รูปแบบ Next ทำให้โหลดเร็ว
 import { useRouter } from 'next/navigation'; // ใช้ next/navigation สำหรับ App Router
+import axios from "axios";  // ใช้เรียก api
 
 const Register = () => {
 
@@ -14,8 +15,9 @@ const Register = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
-    const [bu, setBu] = useState('');
+    const [department, setDepartment] = useState('');
     const [position, setPosition] = useState('');
+    const [permission, setPermission] = useState('1');
 
     //ใช้ redirect page
     const router = useRouter(); 
@@ -23,15 +25,45 @@ const Register = () => {
 
   const handleRegister = (e) => {
     e.preventDefault();
+
+    const requestData = {
+      username: username,
+      password: password,
+      name: name,
+      department: department,
+      position: position,
+      permission: permission
+    };
+    // console.log(requestData);
+
         // Logic สำหรับการสมัครใช้งาน
-        console.log("Username:", username);
-        console.log("Password:", password);
-        console.log("Name:", name);
-        console.log("BU:", bu);
-        console.log("Position:", position);
-        console.log("Register success");
-        router.push('/'); // redirect to Home page
+        // console.log("Username:", username);
+        // console.log("Password:", password);
+        // console.log("Name:", name);
+        // console.log("DEPARTMENT:", department);
+        // console.log("Position:", position);
+
+        // เรียก API ด้วย axios
+        axios.post('http://127.0.0.1:8000/users/register', requestData, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then((response) => {
+            console.log("Registration successful:", response.data);
+            // router.push('/'); // Redirect ไปหน้า Home
+          })
+          .catch((error) => {
+            console.error("Registration failed:", error);
+            // จัดการข้อผิดพลาดที่เกิดขึ้น เช่น แสดงข้อความเตือน
+          });
+
+
+          // router.push('/'); // redirect to Home page
+          console.log("Register success");
+
   };
+
 
 
 
@@ -90,14 +122,14 @@ const Register = () => {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="bu" className="form-label">BU</label>
+            <label htmlFor="department" className="form-label">Department</label>
             <input 
               type="text" 
-              id="bu" 
+              id="department" 
               className="form-control rounded-pill" 
-              placeholder="bu" 
-              value={bu} 
-              onChange={(e) => setBu(e.target.value)} // อัปเดตค่าของ bu
+              placeholder="department" 
+              value={department} 
+              onChange={(e) => setDepartment(e.target.value)} // อัปเดตค่าของ bu
               required 
             />
           </div>
