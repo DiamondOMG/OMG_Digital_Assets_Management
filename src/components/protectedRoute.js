@@ -2,7 +2,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-// import Loader2 from "@/components/loader2";
+import Loader2 from "@/components/loader2";
 
 const ProtectedRoute = ({ children }) => {
   const router = useRouter(); // Use redirect page

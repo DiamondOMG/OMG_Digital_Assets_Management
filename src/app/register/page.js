@@ -8,12 +8,14 @@ import styles from './register.module.css';  // css module แยกตาม co
 import Image from 'next/image';  // รูปแบบ Next ทำให้โหลดเร็ว
 import { useRouter } from 'next/navigation'; // ใช้ next/navigation สำหรับ App Router
 import axios from "axios";  // ใช้เรียก api
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 const Register = () => {
 
     // ใช้ useState เก็บข้อมูลจากฟอร์ม
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false); // สถานะการแสดงรหัสผ่าน
     const [name, setName] = useState('');
     const [department, setDepartment] = useState('');
     const [position, setPosition] = useState('');
@@ -26,44 +28,45 @@ const Register = () => {
   const handleRegister = (e) => {
     e.preventDefault();
 
-    const requestData = {
+    //เก็บข้อมูลจาก Form รวมเป็น Object
+    const registerFormObj = { 
       username: username,
       password: password,
       name: name,
       department: department,
       position: position,
-      permission: permission
+      permission: Number(permission)
     };
-    // console.log(requestData);
-
-        // Logic สำหรับการสมัครใช้งาน
-        // console.log("Username:", username);
-        // console.log("Password:", password);
-        // console.log("Name:", name);
-        // console.log("DEPARTMENT:", department);
-        // console.log("Position:", position);
-
-        // เรียก API ด้วย axios
-        axios.post('http://127.0.0.1:8000/users/register', requestData, {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-          .then((response) => {
-            console.log("Registration successful:", response.data);
-            // router.push('/'); // Redirect ไปหน้า Home
-          })
-          .catch((error) => {
-            console.error("Registration failed:", error);
-            // จัดการข้อผิดพลาดที่เกิดขึ้น เช่น แสดงข้อความเตือน
-          });
 
 
-          // router.push('/'); // redirect to Home page
-          console.log("Register success");
+    // เรียก API ด้วย axios ++++++++++++++++++++++++++++++++++++++++++++++
+    axios.post('http://127.0.0.1:8000/users/register', registerFormObj, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    .then((response) => {
+      console.log("Registration successful:", response.data);
+      router.push('/'); // Redirect ไปหน้า Home
+    })
+    .catch((error) => {
+      console.error("Registration failed:", error.response.data.detail);
+
+      // Alert เตือนเมื่อเกิดข้อผิดพลาดในการ Register เช่น Username ซ้ำ
+      Swal.fire({  // Library alert warning
+        icon: 'warning', // Warning icon
+        title: error.response.data.detail,
+        confirmButtonText: 'OK', // Confirmation button
+        customClass: {
+          title: 'swal2-title',
+          content: 'swal2-content',
+          confirmButton: 'swal2-confirm',
+        },
+      });
+    });
 
   };
-
 
 
 
@@ -99,7 +102,7 @@ const Register = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="password" className="form-label">Password</label>
-            <input 
+            {/* <input 
               type="password" 
               id="password" 
               className="form-control rounded-pill" 
@@ -107,7 +110,27 @@ const Register = () => {
               value={password} 
               onChange={(e) => setPassword(e.target.value)} // อัปเดตค่าของ password
               required 
-            />
+            /> */}
+            <div className="position-relative">
+              <input 
+                type={showPassword ? 'text' : 'password'}  // เปลี่ยนเป็น text ถ้า showPassword เป็น true
+                id="password" 
+                className="form-control rounded-pill" 
+                placeholder="password" 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)} // อัปเดตค่าของ password
+                required 
+                style={{ paddingRight: '30px' }} // เพิ่ม padding ด้านขวาเพื่อหลีกเลี่ยงการทับกัน
+              />
+              <span 
+                className="position-absolute" 
+                style={{ top: '50%', right: '10px', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                onClick={() => setShowPassword(!showPassword)}  // สลับสถานะการแสดงรหัสผ่าน 
+              >
+                  {/* ใช้ Bootstrap Icons */}
+                  {showPassword ? <i className="bi bi-eye"></i> : <i className="bi bi-eye-slash"></i>}
+              </span>
+            </div>
           </div>
           <div className="mb-3">
             <label htmlFor="name" className="form-label">Name</label>

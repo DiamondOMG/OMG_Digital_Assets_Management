@@ -5,12 +5,15 @@ import Loader from "@/components/loader";
 import Table3 from "@/components/table3";
 import Table4 from "@/components/table4";
 import Table5 from "@/components/table5";
+import Table5_1 from "@/components/table5_1";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Loader2 from "@/components/loader2";
 import ProtectedRoute from "@/components/ProtectedRoute";  // Protect route if user don't have token 
+import { useSearchParams } from 'next/navigation';  // ใช้สำหรับอ่าน query string get tokten
 
 const Assets = () => {
+  const searchParams = useSearchParams(); // ใช้สำหรับอ่าน query string
 
   const [data, setData] = useState(null); // สร้าง state สำหรับเก็บข้อมูลสินค้า
   const [views, setViews] = useState([
@@ -31,6 +34,15 @@ const Assets = () => {
 
 
   useEffect(() => {
+    	
+      const token = searchParams.get('token'); // รับค่า 'token' จาก URL
+			if (token) {
+				localStorage.setItem('access_token', token); // เก็บ token ใน localStorage
+				// console.log('Token saved:', token); // Debug
+				// router.push('/assets'); // เปลี่ยนไปหน้า assets
+			}
+
+    
 
     // จำลองข้อมูลสินค้าในคลัง
     const inventoryData = [
@@ -690,7 +702,7 @@ const Assets = () => {
     <ProtectedRoute>
     <Header/>
     <div className="d-flex flex-column py-5">
-      <Table5 data={data} columns={columns} views={views} setViews={setViews} />
+      <Table5_1 data={data} columns={columns} views={views} setViews={setViews} />
     </div> 
     <Footer/>
     </ProtectedRoute>
