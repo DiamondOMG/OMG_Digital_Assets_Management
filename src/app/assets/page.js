@@ -9,7 +9,7 @@ import Table5_1 from "@/components/table5_1";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Loader2 from "@/components/loader2";
-import ProtectedRoute from "@/components/ProtectedRoute";  // Protect route if user don't have token 
+import ProtectedRoute from "@/components/protectedRoute";  // Protect route if user don't have token 
 import { useSearchParams } from 'next/navigation';  // ใช้สำหรับอ่าน query string get tokten
 
 const Assets = () => {

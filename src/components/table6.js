@@ -6,21 +6,20 @@ import {
 	MRT_TableHeadCellFilterContainer,
 } from "material-react-table";
 import {
-  Paper,
-  Stack, 
-  useMediaQuery,
-  Box,
-  Button,
-  Menu,
-  MenuItem,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  TextField,
-  Chip,
-
+	Paper,
+	Stack,
+	useMediaQuery,
+	Box,
+	Button,
+	Menu,
+	MenuItem,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+	TextField,
+	Chip,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -31,7 +30,7 @@ import { exportExcel } from "@/utils/exportExcel";
 import { MRT_ExpandAllButton } from "material-react-table";
 import ViewManager from "./viewmanager";
 
-const Table5 = ({ data, columns, views, setViews }) => {
+const Table6 = ({ data, columns, views, setViews }) => {
 	const [anchorElCsv, setAnchorElCsv] = useState(null); //ใช้ในการเปิดปิดเมนู
 	const [anchorElPdf, setAnchorElPdf] = useState(null); //ใช้ในการเปิดปิดเมนู
 	const [anchorElExcel, setAnchorElExcel] = useState(null); //ใช้ในการเปิดปิดเมนู
@@ -487,4 +486,4 @@ const Table5 = ({ data, columns, views, setViews }) => {
 	);
 };
 
-export default Table5;
+export default Table6;
