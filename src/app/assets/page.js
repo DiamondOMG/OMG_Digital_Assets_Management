@@ -701,9 +701,12 @@ const Assets = () => {
     <>
     <ProtectedRoute>
     <Header/>
-    <div className="d-flex flex-column py-5">
-      <Table5_1 data={data} columns={columns} views={views} setViews={setViews} />
-    </div> 
+    {/* <div className="d-flex flex-column py-5">
+      <Table5 data={data} columns={columns} views={views} setViews={setViews} />
+    </div>  */}
+    <div style={{ overflowX: 'clip', width: '100%' }}>
+      <Table5 data={data} columns={columns} views={views} setViews={setViews} />
+    </div>
     <Footer/>
     </ProtectedRoute>
     </>

@@ -389,6 +389,8 @@ const Table5 = ({ data, columns, views, setViews }) => {
 	return (
 		<LocalizationProvider dateAdapter={AdapterDateFns}>
 			<Stack direction={isMobile ? "column-reverse" : "row"} gap="8px">
+
+				{/* Sidebar view ซ้าย ----------------------------------------------------- */}
 				<ViewManager
 					views={views}
 					isViewDialogOpen={isViewDialogOpen}
@@ -399,8 +401,10 @@ const Table5 = ({ data, columns, views, setViews }) => {
 					handleCloseViewDialog={handleCloseViewDialog}
 					handleAddView={handleAddView}
 				/>
+
 				{/* Table หลัก -----------------------------------------------------------------*/}
 				<MaterialReactTable table={table} />
+				
 				{/* Filter ด้านขวา ---------------------------------------------------------------*/}
 				<Paper>
 					<Stack p="8px" gap="8px">
