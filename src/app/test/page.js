@@ -26,7 +26,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 const fakeData = [
   {
-    id: 1,
+    id: 11,
     name: "John Doe",
     age: 28,
     state: "California",
