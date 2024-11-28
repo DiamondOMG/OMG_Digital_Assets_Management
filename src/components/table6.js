@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -33,6 +33,7 @@ import { MRT_ExpandAllButton } from "material-react-table";
 import ViewManager from "./viewmanager";
 import { Delete } from "@mui/icons-material";
 import { Edit } from "@mui/icons-material";
+import { useCreateAsset } from "@/hook/useAssets";
 
 const Table6 = ({ data, columns, views, setViews }) => {
   const [anchorElCsv, setAnchorElCsv] = useState(null); //ใช้ในการเปิดปิดเมนู
@@ -415,10 +416,17 @@ const Table6 = ({ data, columns, views, setViews }) => {
     setGrouping(view.group);
   };
   //!--------------Create Delete Edit--------------------------------
+  const { mutateAsync: createAsset } = useCreateAsset();
+
+  useEffect(() => {
+    if (data) {
+      setFilteredData(data); // อัปเดต tableData เมื่อ assets เปลี่ยน
+    }
+  }, [data]);
+
   const handleCreateRow = (newRow) => {
-    console.log(newRow);
-    setFilteredData((prevData) => [...prevData, newRow.values]);
-    table.setCreatingRow(null);
+    createAsset(newRow.values);
+    table.setCreatingRow(null); // ซ่อน UI การสร้าง row
   };
 
   const handleSaveRow = (updatedRow) => {
