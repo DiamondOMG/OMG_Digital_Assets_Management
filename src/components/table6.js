@@ -416,16 +416,23 @@ const Table6 = ({ data, columns, views, setViews }) => {
   };
   //!--------------Create Delete Edit--------------------------------
   const handleCreateRow = (newRow) => {
-    setFilteredData((prevData) => [...prevData, newRow]);
+    console.log(newRow);
+    setFilteredData((prevData) => [...prevData, newRow.values]);
     table.setCreatingRow(null);
   };
 
   const handleSaveRow = (updatedRow) => {
-    console.log(updatedRow); // ตรวจสอบว่ามีการส่งข้อมูลที่ถูกต้องหรือไม่
+    console.log(updatedRow); // Verify the structure of the updatedRow object
+
     setFilteredData((prevData) =>
-      prevData.map((row) => (row.id === updatedRow.id ? updatedRow : row))
+      prevData.map((row) =>
+        row.id === updatedRow.values.id
+          ? { ...row, ...updatedRow.values } // Merge the existing row with the updated values
+          : row
+      )
     );
-    updatedRow.exitEditingMode();
+
+    table.setEditingRow(null); // Exit editing mode
   };
 
   const handleDeleteRow = (rowToDelete) => {
