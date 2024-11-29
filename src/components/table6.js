@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
 	MaterialReactTable,
 	useMaterialReactTable,
@@ -20,6 +20,8 @@ import {
 	DialogTitle,
 	TextField,
 	Chip,
+	IconButton,
+	Tooltip,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -29,6 +31,13 @@ import { exportPdf } from "@/utils/exportPdf"; // นำเข้าฟังก
 import { exportExcel } from "@/utils/exportExcel";
 import { MRT_ExpandAllButton } from "material-react-table";
 import ViewManager from "./viewmanager";
+import { Delete } from "@mui/icons-material";
+import { Edit } from "@mui/icons-material";
+import {
+	useCreateAsset,
+	useDeleteAsset,
+	useUpdateAsset,
+} from "@/hook/useAssets";
 
 const Table6 = ({ data, columns, views, setViews }) => {
 	const [anchorElCsv, setAnchorElCsv] = useState(null); //ใช้ในการเปิดปิดเมนู
@@ -59,10 +68,60 @@ const Table6 = ({ data, columns, views, setViews }) => {
 		setter(null);
 	};
 
+	//!--------------Create Delete Edit--------------------------------
+	const { mutateAsync: createAsset } = useCreateAsset();
+	const { mutateAsync: updateAsset } = useUpdateAsset();
+	const { mutateAsync: deleteAsset } = useDeleteAsset();
+
+	useEffect(() => {
+		if (data) {
+			setFilteredData(data); // อัปเดต tableData เมื่อ assets เปลี่ยน
+		}
+	}, [data]);
+
+	const handleCreateRow = (newRow) => {
+		createAsset(newRow.values);
+		table.setCreatingRow(null); // ซ่อน UI การสร้าง row
+	};
+
+	const handleSaveRow = (updatedRow) => {
+		updateAsset({
+			id: updatedRow.values.id, // ส่ง id ของแถวที่ต้องการอัปเดต
+			updatedAsset: updatedRow.values, // ส่งข้อมูลใหม่ของแถว
+		});
+		table.setEditingRow(null); // ซ่อน UI การสร้าง row
+	};
+
+	const handleDeleteRow = (rowToDelete) => {
+		console.log(rowToDelete.id)
+		deleteAsset(rowToDelete.id);
+	};
+	//!-----------------------------------------------------------------
+
 	// สร้าง table instance
 	const table = useMaterialReactTable({
 		columns,
 		data: filteredData, // Using filteredData in the table
+		enableEditing: true, // Enable editing
+		//---------------------------------------------Action-----------------------------------------
+		renderRowActions: ({ row, table }) => (
+			<Box style={{ display: "flex" }}>
+				{/* Edit Button */}
+				<Tooltip title="Edit">
+					<IconButton onClick={() => table.setEditingRow(row)}>
+						<Edit />
+					</IconButton>
+				</Tooltip>
+				{/* Delete Button */}
+				<Tooltip title="Delete">
+					<IconButton onClick={() => handleDeleteRow(row.original)}>
+						<Delete />
+					</IconButton>
+				</Tooltip>
+			</Box>
+		),
+		onEditingRowSave: (updatedRow) => handleSaveRow(updatedRow),
+		onCreatingRowSave: (newRow) => handleCreateRow(newRow),
 		///Group---------------------------------------------------------------
 		displayColumnDefOptions: {
 			"mrt-row-expand": {
@@ -91,7 +150,6 @@ const Table6 = ({ data, columns, views, setViews }) => {
 			},
 		},
 		enableGrouping: true,
-		enableColumnResizing: true,
 		groupedColumnMode: "remove",
 		///ค่าเริ่มต้น-------------------------------------------------------------------------
 		initialState: {
@@ -125,7 +183,6 @@ const Table6 = ({ data, columns, views, setViews }) => {
 			},
 		}),
 		///ตารางยืดดด-------------------------------------------------------------------------------------
-		layoutMode: "grid", // ทำให้ตารางยืดตามจำนวนแถวใน page
 		muiTableBodyProps: {
 			sx: {
 				overflow: "unset", // ยกเลิกการเลื่อนอัตโนมัติในแนวตั้ง
@@ -155,6 +212,14 @@ const Table6 = ({ data, columns, views, setViews }) => {
 					flexWrap: "wrap",
 				}}
 			>
+				<Button
+					variant="contained"
+					onClick={() => {
+						table.setCreatingRow(true);
+					}}
+				>
+					Create New User
+				</Button>
 				{/* CSV Dropdown */}
 				<Button
 					aria-controls="export-csv-menu"
