@@ -6,20 +6,21 @@ import {
 	MRT_TableHeadCellFilterContainer,
 } from "material-react-table";
 import {
-	Paper,
-	Stack,
-	useMediaQuery,
-	Box,
-	Button,
-	Menu,
-	MenuItem,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogContentText,
-	DialogTitle,
-	TextField,
-	Chip,
+  Paper,
+  Stack, 
+  useMediaQuery,
+  Box,
+  Button,
+  Menu,
+  MenuItem,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+  Chip,
+
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -30,7 +31,7 @@ import { exportExcel } from "@/utils/exportExcel";
 import { MRT_ExpandAllButton } from "material-react-table";
 import ViewManager from "./viewmanager";
 
-const Table5 = ({ data, columns, views, setViews }) => {
+const Table5 = ({ data, columns, views, setViews, showSidebarLeft, setShowSidebarLeft }) => {
 	const [anchorElCsv, setAnchorElCsv] = useState(null); //ใช้ในการเปิดปิดเมนู
 	const [anchorElPdf, setAnchorElPdf] = useState(null); //ใช้ในการเปิดปิดเมนู
 	const [anchorElExcel, setAnchorElExcel] = useState(null); //ใช้ในการเปิดปิดเมนู
@@ -388,6 +389,8 @@ const Table5 = ({ data, columns, views, setViews }) => {
 	return (
 		<LocalizationProvider dateAdapter={AdapterDateFns}>
 			<Stack direction={isMobile ? "column-reverse" : "row"} gap="8px">
+
+				{/* Sidebar view ซ้าย ----------------------------------------------------- */}
 				<ViewManager
 					views={views}
 					isViewDialogOpen={isViewDialogOpen}
@@ -397,9 +400,13 @@ const Table5 = ({ data, columns, views, setViews }) => {
 					setViewName={setViewName}
 					handleCloseViewDialog={handleCloseViewDialog}
 					handleAddView={handleAddView}
+					showSidebarLeft={showSidebarLeft} 
+					setShowSidebarLeft={setShowSidebarLeft} 
 				/>
+
 				{/* Table หลัก -----------------------------------------------------------------*/}
 				<MaterialReactTable table={table} />
+				
 				{/* Filter ด้านขวา ---------------------------------------------------------------*/}
 				<Paper>
 					<Stack p="8px" gap="8px">

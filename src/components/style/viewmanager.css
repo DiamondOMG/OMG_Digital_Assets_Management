@@ -1,0 +1,48 @@
+.icon-hover {
+	cursor: pointer;
+	transition: color 0.3s ease; /* เพิ่มความนุ่มนวล */
+	color: black; /* สีเริ่มต้น */
+}
+
+.icon-hover:hover {
+	color: #39CAFF; /* สีเมื่อ hover */
+    font-size: 17px;
+    transition: 0.1s;
+}
+
+.view-menu-text:hover {
+    color: #007bff; /* เปลี่ยนสีข้อความ */
+    font-weight: bold; /* ทำให้ตัวหนา */
+    /* transform: scale(1.05); ขยายเล็กน้อย */
+    transition: all 0.1s ease-in-out; /* ใส่แอนิเมชันนุ่มนวล */
+    /* text-shadow: 0px 2px 5px rgba(0, 123, 255, 0.4); เพิ่มเงา */
+}
+
+.hover-list-view-bg:hover{
+    background: #D6F2FF;
+    border-radius: 4px;
+}
+
+/* ปรับ dropdown menu item เมื่อ hover หรือ focus */
+.dropdown-menu .dropdown-item:focus,
+.dropdown-menu .dropdown-item:hover {
+    background-color: #ebebeb; /* สีพื้นหลังเมื่อ hover/focus */
+    color: #343a40; /* สีข้อความ */
+    outline: none; /* ลบกรอบ focus */
+    transition: background-color 0.3s ease; /* เพิ่มแอนิเมชันนุ่มนวล */
+}
+
+
+
+/* test */
+.view-manager {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: transform 0.3s ease; /* Animation สำหรับแสดง Sidebar */
+    transform: translateX(-100%); /* ซ่อน Sidebar เมื่อไม่เปิด */
+}
+
+.view-manager.d-block {
+    transform: translateX(0); /* แสดง Sidebar เมื่อเปิด */
+}
