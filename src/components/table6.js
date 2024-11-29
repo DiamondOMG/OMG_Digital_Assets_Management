@@ -46,6 +46,8 @@ const Table6 = ({
   setViews,
   showSidebarLeft,
   setShowSidebarLeft,
+  showSidebarRight, 
+  setShowSidebarRight 
 }) => {
   const [anchorElCsv, setAnchorElCsv] = useState(null); //ใช้ในการเปิดปิดเมนู
   const [anchorElPdf, setAnchorElPdf] = useState(null); //ใช้ในการเปิดปิดเมนู
@@ -457,6 +459,7 @@ const Table6 = ({
     setGrouping(view.group);
   };
 
+
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Stack direction={isMobile ? "column-reverse" : "row"} gap="8px">
@@ -474,7 +477,9 @@ const Table6 = ({
         />
         {/* Table หลัก -----------------------------------------------------------------*/}
         <MaterialReactTable table={table} />
+      
         {/* Filter ด้านขวา ---------------------------------------------------------------*/}
+        {showSidebarRight && (
         <Paper>
           <Stack p="8px" gap="8px">
             {/* ปุ่มและ Dialog สำหรับจัดการกลุ่ม----------------------------------- */}
@@ -555,6 +560,8 @@ const Table6 = ({
               )}
           </Stack>
         </Paper>
+        )}
+
       </Stack>
     </LocalizationProvider>
   );

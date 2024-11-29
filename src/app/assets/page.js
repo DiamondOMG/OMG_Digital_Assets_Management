@@ -10,7 +10,8 @@ import { useViews } from "@/hook/useViews";
 import ProtectedRoute from "@/components/protectedRoute"; // Protect route if user don't have token
 
 const Assets = () => {
-  const [showSidebarLeft, setShowSidebarLeft] = useState(true); // Left sidebar visibility
+  const [showSidebarLeft, setShowSidebarLeft] = useState(true); // Left sidebar  สำหรับเก็บตัวส่ง prop ไปให้ Header and Table6 
+  const [showSidebarRight, setShowSidebarRight] = useState(true); // Right sidebar  สำหรับเก็บตัวส่ง prop ไปให้ Header and Table6 
   const { data, isLoading, isError, error } = useAssets();
   const {
     data: dataView,
@@ -65,28 +66,34 @@ const Assets = () => {
   return (
     <>
       <ProtectedRoute>
-        <Header
-          showSidebarLeft={showSidebarLeft}
-          setShowSidebarLeft={setShowSidebarLeft}
-        />
-        <div
-          style={{
-            overflowX: "clip",
-            width: "100%",
-            marginTop: "135px",
-            padding: "20px",
-          }}
-        >
-          <Table6
-            data={data}
-            columns={columns}
-            views={views}
-            setViews={setViews}
+        <div className="d-flex flex-column min-vh-100">
+          <Header
             showSidebarLeft={showSidebarLeft}
             setShowSidebarLeft={setShowSidebarLeft}
+            showSidebarRight={showSidebarRight}
+            setShowSidebarRight={setShowSidebarRight}
           />
+          <div class="flex-grow-1"
+            style={{
+              overflowX: "clip",
+              width: "100%",
+              marginTop: "135px",
+              padding: "20px",
+            }}
+          >
+            <Table6
+              data={data}
+              columns={columns}
+              views={views}
+              setViews={setViews}
+              showSidebarLeft={showSidebarLeft}
+              setShowSidebarLeft={setShowSidebarLeft}
+              showSidebarRight={showSidebarRight}
+              setShowSidebarRight={setShowSidebarRight}
+            />
+          </div>
+          <Footer />
         </div>
-        <Footer />
       </ProtectedRoute>
     </>
   );

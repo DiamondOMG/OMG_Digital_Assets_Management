@@ -8,21 +8,15 @@ import './style/header.css';
 import { useRouter } from 'next/navigation'; // ใช้ next/navigation สำหรับ App Router
 
  
-const Header = ({ showSidebarLeft, setShowSidebarLeft }) => {
+const Header = ({ showSidebarLeft, setShowSidebarLeft, showSidebarRight, setShowSidebarRight }) => {
 
     // test
-
-
     const [showAccount, setShowAccount] = useState(false);
-    const [showLeftSidebar, setShowLeftSidebar] = useState(true); // Left sidebar visibility
-    const [showRightSidebar, setShowRightSidebar] = useState(true); // Right sidebar visibility
     const [showNavbarItems, setShowNavbarItems] = useState(true); // สถานะการแสดง Navbar Items
     const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 992); // ตรวจสอบขนาดหน้าจอ
     const dropdownRef = useRef(null);
 
     const toggleAccount = () => setShowAccount((prev) => !prev); // ฟังก์ชันสำหรับเปลี่ยนสถานะ
-    const toggleLeftSidebar = () => setShowLeftSidebar((prev) => !prev); // ฟังก์ชันสำหรับเปลี่ยนสถานะ
-    const toggleRightSidebar = () => setShowRightSidebar((prev) => !prev); // ฟังก์ชันสำหรับเปลี่ยนสถานะ
     const toggleNavbarItems = () => setShowNavbarItems((prev) => !prev); // ฟังก์ชันสำหรับเปลี่ยนสถานะ
 
     const handleClickOutside = (event) => {
@@ -40,7 +34,6 @@ const Header = ({ showSidebarLeft, setShowSidebarLeft }) => {
           setShowNavbarItems(true);
         }
       };
-    //   console.log(isDesktop);
 
     const router = useRouter();   // คำสั่งสำหรับ redirect page   
     const handleLogout = () => {
@@ -50,23 +43,10 @@ const Header = ({ showSidebarLeft, setShowSidebarLeft }) => {
         localStorage.removeItem("name");
         localStorage.removeItem("department");
         localStorage.removeItem("position");
-    
         // เปลี่ยนเส้นทางกลับไป login
          router.push('/');
     };
 
-    // useEffect(() => {
-    //     if (showAccount) {
-    //         document.addEventListener("mousedown", handleClickOutside);
-    //     } else {
-    //         document.removeEventListener("mousedown", handleClickOutside);
-    //     }
-    //     return () => {
-    //         document.removeEventListener("mousedown", handleClickOutside);
-    //     };
-
-        
-    // }, [showAccount]);
 
     useEffect(() => {
         const handleEvents = () => {
@@ -90,10 +70,16 @@ const Header = ({ showSidebarLeft, setShowSidebarLeft }) => {
     }, [showAccount]); // ทำงานใหม่เมื่อ `showAccount` เปลี่ยน
 
 
-    //View Sidebar toggle ปุ่ม เปิด/ปิด sidebar view ซ้าย ++++++++++++++++++++
+    // View Sidebar toggle ปุ่ม เปิด/ปิด sidebar view ซ้าย ++++++++++++++++++++
     const viewSidebar = () => {
         setShowSidebarLeft(!showSidebarLeft); // การสลับสถานะของ Sidebar
         console.log(showSidebarLeft)
+    };
+
+    // Filter Sidebar toggle ปุ่ม เปิด/ปิด sidebar filter ขวา ++++++++++++++++++++
+    const filterSidebar = () => {
+        setShowSidebarRight(!showSidebarRight); // การสลับสถานะของ Sidebar
+        console.log(showSidebarRight)
     };
     
 
@@ -155,9 +141,9 @@ const Header = ({ showSidebarLeft, setShowSidebarLeft }) => {
                             <i className="bi bi-list" style={{ fontSize: "20px", color: "#000",  textDecoration: "none"}}></i> View
                         </button>
 
-                        {/* Search & Filter for Small Screens */}
+                        {/*  Filter for Small Screens */}
                         <div className="d-lg-none d-flex align-items-center ms-auto mx-2">
-                            <button  onClick={toggleRightSidebar}  className="btn btn-outline-secondary">
+                            <button  onClick={filterSidebar}  className="btn btn-outline-secondary">
                                 <i className="bi bi-funnel fs-5"></i>
                             </button>
                             <button className="btn btn-outline-secondary d-lg-none mx-2" onClick={toggleNavbarItems}>
@@ -201,7 +187,7 @@ const Header = ({ showSidebarLeft, setShowSidebarLeft }) => {
 
                             {/* Filter Buttons for Large Screens */}
                             <div className="d-none d-lg-flex">
-                                <button  onClick={toggleRightSidebar} className="btn btn-outline-secondary">
+                                <button  onClick={filterSidebar} className="btn btn-outline-secondary">
                                     <i className="bi bi-filter"></i> Filter
                                 </button>
                             </div>
