@@ -1,35 +1,33 @@
 "use client"; // บอกให้ Next.js รู้ว่านี่เป็น Client-Side Component
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Loader from "@/components/loader";
 import Table6 from "@/components/table6";
 import { useAssets } from "@/hook/useAssets";
+import { useViews } from "@/hook/useViews";
 
 const InventoryPage = () => {
-  const [views, setViews] = useState([
-    {
-      name: "7777",
-      filters: [{ id: "age", value: [10, 30] }],
-      sorting: [],
-      group: ["age"],
-    },
-    {
-      name: "555",
-      filters: [{ id: "gender", value: "Female" }],
-      sorting: [],
-      group: ["gender"],
-    },
-    // เพิ่ม views ตามโครงสร้างข้อมูล
-  ]);
-
   const { data, isLoading, isError, error } = useAssets();
+  const {
+    data: dataView,
+    isLoading: isLoadingView,
+    isError: isErrorView,
+    error: errorView,
+  } = useViews();
+  const [views, setViews] = useState(dataView);
+  useEffect(() => {
+    if (dataView) {
+      setViews(dataView); // อัปเดต tableData เมื่อ assets เปลี่ยน
+    }
+  }, [dataView]);
 
   // กรณีข้อมูลยังไม่ถูกโหลด
-  if (isLoading) {
+  if (isLoading || isLoadingView) {
     return <Loader />;
   }
 
   if (isError) return <p>Error: {error.message}</p>;
+  if (isErrorView) return <p>Error: {errorView.message}</p>;
 
   const columns = [
     { accessorKey: "id", header: "ID" },
