@@ -93,6 +93,7 @@ const Table6 = ({ data, columns, views, setViews }) => {
 	};
 
 	const handleDeleteRow = (rowToDelete) => {
+		console.log(rowToDelete.id)
 		deleteAsset(rowToDelete.id);
 	};
 	//!-----------------------------------------------------------------
