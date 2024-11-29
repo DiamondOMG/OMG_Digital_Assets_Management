@@ -459,6 +459,14 @@ const Table6 = ({
 	deleteView(view.id)
   }
 
+  const handleEditView = (updatedRow) => {
+    updateAsset({
+      id: updatedRow.values.id, // ส่ง id ของแถวที่ต้องการอัปเดต
+      updatedAsset: updatedRow.values, // ส่งข้อมูลใหม่ของแถว
+    });
+    table.setEditingRow(null); // ซ่อน UI การสร้าง row
+  };
+
   // เปิด-ปิด Dialog
   const handleCloseViewDialog = () => {
     setIsViewDialogOpen(false);
