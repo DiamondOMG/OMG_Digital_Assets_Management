@@ -13,8 +13,8 @@ const ViewManager = ({
 	handleCloseViewDialog,
 	handleAddView,
 	showSidebarLeft, 
-	setShowSidebarLeft
-
+	setShowSidebarLeft,
+	handleDeleteView
 	
 }) => {
 	const [isDropdownOpen, setIsDropdownOpen] = useState(null); // To track which dropdown is open

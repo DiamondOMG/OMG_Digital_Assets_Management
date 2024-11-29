@@ -38,6 +38,7 @@ import {
   useDeleteAsset,
   useUpdateAsset,
 } from "@/hook/useAssets";
+import { useCreateView, useDeleteView, useUpdateView } from "@/hook/useViews";
 
 const Table6 = ({
   data,
@@ -426,29 +427,42 @@ const Table6 = ({
       return newGroups;
     });
   };
-  ///ฟังชั่น สำหรับสร้าง view ใหม่และเพิ่มใน views-----------------------------------------------------------------------
+  //!-----------------------------------------------Create Edit Delete views-----------------------------------------------------------------------
+  const { mutateAsync: createView } = useCreateView();
+  const { mutateAsync: updateView } = useUpdateView();
+  const { mutateAsync: deleteView } = useDeleteView();
+
+  const handleAddView = () => {
+    const filteredFilters = columnFilters.filter((filter) => {
+      // ตรวจสอบว่า value ของ filter เป็น array หรือไม่ และใน array นั้นไม่มีค่า null หรือ undefined
+      if (Array.isArray(filter.value)) {
+        // กรอง array ที่มีค่า null หรือ undefined
+        return filter.value.every((val) => val !== null && val !== undefined);
+      }
+      // ถ้า value ไม่เป็น array ก็ให้ส่งข้อมูลไปปกติ
+      return true;
+    });
+    const newView = {
+      id_user: "b47b3ac6-8c40-4f05-ad6f-98a7d1e74b39",
+      data_type: "Asset",
+      name: viewName,
+      levelView: 1,
+      filters: filteredFilters,
+      sorting: [...sorting],
+      group: [...grouping], // สามารถเพิ่ม group field อื่นๆ ที่ต้องการได้
+    };
+    createView(newView);
+    handleCloseViewDialog();
+  };
+
+  const handleDeleteView = (view) => {
+	deleteView(view.id)
+  }
+
   // เปิด-ปิด Dialog
   const handleCloseViewDialog = () => {
     setIsViewDialogOpen(false);
     setViewName("");
-  };
-
-  const handleAddView = () => {
-    const newView = {
-      name: viewName,
-      filters: [...columnFilters],
-      sorting: [...sorting],
-      group: [...grouping], // สามารถเพิ่ม group field อื่นๆ ที่ต้องการได้
-    };
-
-    // เพิ่ม view ใหม่เข้าไปใน views array และ log views หลังอัปเดต
-    setViews((prevViews) => {
-      const updatedViews = [...prevViews, newView];
-      console.log(updatedViews); // แสดง views หลังจากถูกอัปเดต
-      return updatedViews;
-    });
-
-    handleCloseViewDialog();
   };
 
   const handleButtonClick = (view) => {
@@ -456,7 +470,7 @@ const Table6 = ({
     setSorting(view.sorting);
     setGrouping(view.group);
   };
-
+  //!----------------------------------------------------------------------------------------------------------------------------------------------------
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Stack direction={isMobile ? "column-reverse" : "row"} gap="8px">
@@ -471,6 +485,7 @@ const Table6 = ({
           handleAddView={handleAddView}
           showSidebarLeft={showSidebarLeft}
           setShowSidebarLeft={setShowSidebarLeft}
+		  handleDeleteView={handleDeleteView}
         />
         {/* Table หลัก -----------------------------------------------------------------*/}
         <MaterialReactTable table={table} />
