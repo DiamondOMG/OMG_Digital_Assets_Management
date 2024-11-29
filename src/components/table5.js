@@ -31,7 +31,7 @@ import { exportExcel } from "@/utils/exportExcel";
 import { MRT_ExpandAllButton } from "material-react-table";
 import ViewManager from "./viewmanager";
 
-const Table5 = ({ data, columns, views, setViews }) => {
+const Table5 = ({ data, columns, views, setViews, showSidebarLeft, setShowSidebarLeft }) => {
 	const [anchorElCsv, setAnchorElCsv] = useState(null); //ใช้ในการเปิดปิดเมนู
 	const [anchorElPdf, setAnchorElPdf] = useState(null); //ใช้ในการเปิดปิดเมนู
 	const [anchorElExcel, setAnchorElExcel] = useState(null); //ใช้ในการเปิดปิดเมนู
@@ -400,6 +400,8 @@ const Table5 = ({ data, columns, views, setViews }) => {
 					setViewName={setViewName}
 					handleCloseViewDialog={handleCloseViewDialog}
 					handleAddView={handleAddView}
+					showSidebarLeft={showSidebarLeft} 
+					setShowSidebarLeft={setShowSidebarLeft} 
 				/>
 
 				{/* Table หลัก -----------------------------------------------------------------*/}

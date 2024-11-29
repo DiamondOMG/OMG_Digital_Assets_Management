@@ -5,14 +5,15 @@ import Loader from "@/components/loader";
 import Table3 from "@/components/table3";
 import Table4 from "@/components/table4";
 import Table5 from "@/components/table5";
-import Table5_1 from "@/components/table5_1";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Loader2 from "@/components/loader2";
 import ProtectedRoute from "@/components/protectedRoute";  // Protect route if user don't have token 
 import { useSearchParams } from 'next/navigation';  // ใช้สำหรับอ่าน query string get tokten
 
-const Assets = () => {
+const Assets = () => { 
+
+  const [showSidebarLeft, setShowSidebarLeft] = useState(true); // Left sidebar visibility
   const searchParams = useSearchParams(); // ใช้สำหรับอ่าน query string
 
   const [data, setData] = useState(null); // สร้าง state สำหรับเก็บข้อมูลสินค้า
@@ -700,12 +701,15 @@ const Assets = () => {
   return (
     <>
     <ProtectedRoute>
-    <Header/>
-    {/* <div className="d-flex flex-column py-5">
-      <Table5 data={data} columns={columns} views={views} setViews={setViews} />
-    </div>  */}
-    <div style={{ overflowX: 'clip', width: '100%' }}>
-      <Table5 data={data} columns={columns} views={views} setViews={setViews} />
+    <Header
+        showSidebarLeft={showSidebarLeft} 
+        setShowSidebarLeft={setShowSidebarLeft} 
+    />
+    <div style={{ overflowX: 'clip', width: '100%',marginTop:'135px', padding:'20px' }}>
+      <Table5 data={data} columns={columns} views={views} setViews={setViews} 
+          showSidebarLeft={showSidebarLeft} 
+          setShowSidebarLeft={setShowSidebarLeft} 
+      />
     </div>
     <Footer/>
     </ProtectedRoute>

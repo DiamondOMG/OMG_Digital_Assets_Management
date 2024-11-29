@@ -8,7 +8,11 @@ import './style/header.css';
 import { useRouter } from 'next/navigation'; // ใช้ next/navigation สำหรับ App Router
 
  
-const Header = () => {
+const Header = ({ showSidebarLeft, setShowSidebarLeft }) => {
+
+    // test
+
+
     const [showAccount, setShowAccount] = useState(false);
     const [showLeftSidebar, setShowLeftSidebar] = useState(true); // Left sidebar visibility
     const [showRightSidebar, setShowRightSidebar] = useState(true); // Right sidebar visibility
@@ -84,12 +88,20 @@ const Header = () => {
             window.removeEventListener("resize", handleEvents);
         };
     }, [showAccount]); // ทำงานใหม่เมื่อ `showAccount` เปลี่ยน
+
+
+    //View Sidebar toggle ปุ่ม เปิด/ปิด sidebar view ซ้าย ++++++++++++++++++++
+    const viewSidebar = () => {
+        setShowSidebarLeft(!showSidebarLeft); // การสลับสถานะของ Sidebar
+        console.log(showSidebarLeft)
+    };
     
 
     return (
         <div>
 
             <div className="fixed-top">
+
                 {/*++++++++++++++++ Navbar top +++++++++++++++++++++++++++++++++ */}
                 <Navbar expand="lg" style={{ backgroundColor: "#39CAFF", color: "white" }}>
                     <Container fluid className="d-flex justify-content-between align-items-center customJustifyTopHead">
@@ -139,7 +151,7 @@ const Header = () => {
                     <div className="container-fluid">
 
                         {/* Hamburger Menu with Bootstrap Icon */}
-                        <button onClick={toggleLeftSidebar} className="btn btn-link text-decoration-none btn btn-outline-secondary border border-secondary text-dark me-3">
+                        <button onClick={viewSidebar} className="btn btn-link text-decoration-none btn btn-outline-secondary border border-secondary text-dark me-3">
                             <i className="bi bi-list" style={{ fontSize: "20px", color: "#000",  textDecoration: "none"}}></i> View
                         </button>
 
@@ -200,67 +212,6 @@ const Header = () => {
                 </nav>
             </div>
 
-        
-            {/* Main Content Area */}
-            <div className="content-marginTop" style={{ display: "flex", height: "calc(100vh - 56px)" }}>
-                {/* Left Sidebar */}
-                {showLeftSidebar && (
-                    <div style={{
-                        width: "250px",
-                        backgroundColor: "#f8f9fa",
-                        padding: "20px",
-                        borderRight: "1px solid #ddd",
-                        overflowY: "auto"
-                    }}>
-                        <input type="text" placeholder="Find a view" style={{ width: "100%", marginBottom: "15px" }} />
-                        <div>
-                            <h5>My views</h5>
-                            <p><Link href="#">Overview</Link></p>
-                            <p><Link href="#">Menu Label</Link></p>
-                            <p><Link href="#">Menu Label</Link></p>
-                        </div>
-                        <div>
-                            <h5>All views</h5>
-                            <p><Link href="#">Overview</Link></p>
-                            <p><Link href="#">Menu Label</Link></p>
-                            <p><Link href="#">Menu Label</Link></p>
-                        </div>
-                    </div>
-                )}
-
-                {/* Main Table Area */}
-                <div style={{
-                    flexGrow: 1,
-                    padding: "20px",
-                    overflowY: "auto",
-                    transition: "margin 0.3s",
-                    marginLeft: showLeftSidebar ? "0" : "0px",
-                    marginRight: showRightSidebar ? "0px" : "0"
-                }}>
-                    <div style={{ border: "1px solid #007bff", padding: "20px", textAlign: "center", fontSize: "24px" }}>
-                        Table
-                    </div>
-                </div>
-
-                {/* Right Sidebar */}
-                {showRightSidebar && (
-                    <div style={{
-                        width: "250px",
-                        backgroundColor: "#f8f9fa",
-                        padding: "20px",
-                        borderLeft: "1px solid #ddd",
-                        overflowY: "auto"
-                    }}>
-                        <h5>Filter by Select</h5>
-                        {Array.from({ length: 10 }).map((_, index) => (
-                            <div key={index} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "5px 0" }}>
-                                <span>Filter by Select</span>
-                                <button className="btn-close" style={{ fontSize: "12px" }}></button>
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </div>
         </div>
     );
 };

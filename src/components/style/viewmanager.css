@@ -34,3 +34,15 @@
 
 
 
+/* test */
+.view-manager {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: transform 0.3s ease; /* Animation สำหรับแสดง Sidebar */
+    transform: translateX(-100%); /* ซ่อน Sidebar เมื่อไม่เปิด */
+}
+
+.view-manager.d-block {
+    transform: translateX(0); /* แสดง Sidebar เมื่อเปิด */
+}
