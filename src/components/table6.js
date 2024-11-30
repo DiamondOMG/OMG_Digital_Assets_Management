@@ -31,8 +31,7 @@ import { exportPdf } from "@/utils/exportPdf"; // นำเข้าฟังก
 import { exportExcel } from "@/utils/exportExcel";
 import { MRT_ExpandAllButton } from "material-react-table";
 import ViewManager from "./viewmanager";
-import { Delete } from "@mui/icons-material";
-import { Edit } from "@mui/icons-material";
+import { Delete, Add, Edit } from "@mui/icons-material";
 import {
 	useCreateAsset,
 	useDeleteAsset,
@@ -220,14 +219,16 @@ const Table6 = ({
 					flexWrap: "wrap",
 				}}
 			>
-				<Button
-					variant="contained"
-					onClick={() => {
-						table.setCreatingRow(true);
-					}}
-				>
-					Create New User
-				</Button>
+				<Tooltip title="Create">
+					<Button
+						variant="contained"
+						onClick={() => {
+							table.setCreatingRow(true);
+						}}
+					>
+						<Add />
+					</Button>
+				</Tooltip>
 				{/* CSV Dropdown */}
 				<Button
 					aria-controls="export-csv-menu"
