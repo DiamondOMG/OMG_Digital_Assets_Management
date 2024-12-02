@@ -10,7 +10,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation"; // ใช้ next/navigation สำหรับ App Router
 import axios from "axios"; // ใช้เรียก api
 import Swal from "sweetalert2"; // Import SweetAlert2
-import { useSearchParams } from "next/navigation"; // ใช้สำหรับอ่าน query string get tokten
 import { Suspense } from "react";
 
 const Login = () => {
@@ -19,7 +18,6 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false); // สถานะการแสดงรหัสผ่าน
   const router = useRouter(); //redirect page
   const [isLoading, setIsLoading] = useState(true); //Loading
-  const searchParams = useSearchParams(); // ใช้สำหรับอ่าน query string
 
   // ฟังก์ชันจัดการเมื่อ click submit form
   const handleLogin = async (e) => {
