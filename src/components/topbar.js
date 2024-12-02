@@ -64,7 +64,7 @@ function Topbar() {
 
 
   return (
-    <div  className="fixed-top">
+    <div>
             {/*++++++++++++++++ Navbar top +++++++++++++++++++++++++++++++++ */}
             <Navbar expand="lg" style={{ backgroundColor: "#39CAFF", color: "white" }}>
                 <Container fluid className="d-flex justify-content-between align-items-center customJustifyTopHead">
