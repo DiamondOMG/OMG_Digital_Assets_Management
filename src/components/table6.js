@@ -584,7 +584,7 @@ const Table6 = ({
               )}
           </Stack>
         </Paper>
-        )}
+      
 
       </Stack>
     </LocalizationProvider>

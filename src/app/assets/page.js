@@ -73,7 +73,7 @@ const Assets = () => {
             showSidebarRight={showSidebarRight}
             setShowSidebarRight={setShowSidebarRight}
           />
-          <div class="flex-grow-1"
+          <div className="flex-grow-1"
             style={{
               overflowX: "clip",
               width: "100%",

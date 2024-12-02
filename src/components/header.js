@@ -6,6 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Link from 'next/link';
 import './style/header.css';
 import { useRouter } from 'next/navigation'; // ใช้ next/navigation สำหรับ App Router
+import Topbar from "./topbar";
 
  
 const Header = ({ showSidebarLeft, setShowSidebarLeft, showSidebarRight, setShowSidebarRight }) => {
@@ -33,7 +34,7 @@ const Header = ({ showSidebarLeft, setShowSidebarLeft, showSidebarRight, setShow
         if (isDesktopNow) {
           setShowNavbarItems(true);
         }
-      };
+    };
 
     const router = useRouter();   // คำสั่งสำหรับ redirect page   
     const handleLogout = () => {
@@ -89,7 +90,7 @@ const Header = ({ showSidebarLeft, setShowSidebarLeft, showSidebarRight, setShow
             <div className="fixed-top">
 
                 {/*++++++++++++++++ Navbar top +++++++++++++++++++++++++++++++++ */}
-                <Navbar expand="lg" style={{ backgroundColor: "#39CAFF", color: "white" }}>
+                <Navbar className="d-none" expand="lg" style={{ backgroundColor: "#39CAFF", color: "white" }}>
                     <Container fluid className="d-flex justify-content-between align-items-center customJustifyTopHead">
                         <Navbar.Brand href="/assets" style={{ color: "#081E26", fontWeight: "500" }}>
                             <i className="bi bi-display pe-3"></i> OMG Digital - Asset Management
@@ -122,7 +123,7 @@ const Header = ({ showSidebarLeft, setShowSidebarLeft, showSidebarRight, setShow
                                             borderRadius: "5px",
                                         }}
                                     >
-                                        <Link href="#" className="dropdown-item"><i className="bi bi-person"></i> Profile</Link>
+                                        <Link href="/profile" className="dropdown-item"><i className="bi bi-person"></i> Profile</Link>
                                         <Link href="#" className="dropdown-item"><i className="bi bi-person-check"></i> Permission</Link>
                                         <Link href="/" className="dropdown-item" onClick={handleLogout}><i className="bi bi-box-arrow-right"></i> Logout</Link>
                                     </div>
@@ -131,6 +132,8 @@ const Header = ({ showSidebarLeft, setShowSidebarLeft, showSidebarRight, setShow
                         </div>
                     </Container>
                 </Navbar>
+                <Topbar/>
+
 
                 {/*++++++++++++++++++++++ Menu bar page ++++++++++++++++++++++++++++++++*/}
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
