@@ -34,32 +34,58 @@ const Assets = () => {
   if (isErrorView) return <p>Error: {errorView.message}</p>;
 
   const columns = [
-    { accessorKey: "id", header: "ID" },
-    { accessorKey: "firstName", header: "First Name" },
-    { accessorKey: "lastName", header: "Last Name" },
     {
-      accessorKey: "gender",
-      header: "Gender",
-      filterFn: "equals",
-      filterSelectOptions: ["Male", "Female", "Other"],
-      filterVariant: "select",
+      accessorKey: "MACADDRESS",
+      header: "MAC Address",
+      muiEditTextFieldProps: {
+        required: true,
+        // ตรวจสอบการกรอกข้อมูลในขณะที่กรอก (onInput หรือ onChange)
+        onInput: (event) => {
+          const value = event.target.value;
+          // แทนที่อักขระที่ไม่ใช่ A-Z หรือ 0-9
+          const regex = /[^A-Z0-9]/g; // หาตัวอักษรที่ไม่ใช่ A-Z หรือ 0-9
+          event.target.value = value.replace(regex, ""); // ลบตัวอักษรที่ไม่ต้องการ
+        },
+        // แสดงข้อความ error เมื่อมีการกรอกข้อมูลผิด
+        error: false, // แค่บล็อกตัวอักษรผิดในระหว่างการกรอกข้อมูล
+        helperText: "Please type only A-Z and 0-9",
+      },
     },
-    { accessorKey: "age", header: "Age", filterVariant: "range" },
-    { accessorKey: "job_title", header: "Job Title" },
-    { accessorKey: "salary", header: "Salary", filterVariant: "range" },
-    { accessorKey: "start_date", header: "Start Date" },
-    { accessorKey: "end_date", header: "End Date" },
-    { accessorKey: "department", header: "Department" },
-    { accessorKey: "address", header: "Address" },
-    { accessorKey: "city", header: "City" },
-    { accessorKey: "country", header: "Country" },
-    { accessorKey: "email", header: "Email" },
-    { accessorKey: "phone_number", header: "Phone Number" },
+    { accessorKey: "TimeStamp (Last)", header: "Last Timestamp" },
+    { accessorKey: "Playbox Label", header: "Playbox Label" },
+    { accessorKey: "Store Location", header: "Store Location" },
+    { accessorKey: "Store Section", header: "Store Section" },
+    { accessorKey: "StoreCode", header: "Store Code" },
+    { accessorKey: "RUNNO(Some)", header: "Run Number" },
+    { accessorKey: "GroupID", header: "Group ID" },
+    { accessorKey: "GroupName", header: "Group Name" },
+    { accessorKey: "TimeStamp (Last Run)", header: "Last Run Timestamp" },
+    { accessorKey: "Black Condition", header: "Black Condition" },
+    { accessorKey: "Retailer", header: "Retailer" },
+    { accessorKey: "Category", header: "Category" },
     {
-      accessorKey: "createdOn",
-      header: "Created At",
-      filterVariant: "date-range",
+      accessorKey: "DisplayConnected",
+      header: "Display Connected",
+      filterVariant: "range",
     },
+    {
+      accessorKey: "Display AspectRatio",
+      header: "Display Aspect Ratio",
+      size: 300,
+    },
+    { accessorKey: "Display Arrangement", header: "Display Arrangement" },
+    { accessorKey: "Display Position", header: "Display Position" },
+    { accessorKey: "ConnectVia", header: "Connect Via" },
+    { accessorKey: "wifiSSID", header: "Wi-Fi SSID" },
+    { accessorKey: "ProjectName", header: "Project Name" },
+    {
+      accessorKey: "screen Position Side",
+      header: "Screen Position Side",
+      size: 300,
+    },
+    { accessorKey: "setMacAddress", header: "Set MAC Address" },
+    { accessorKey: "Phone", header: "Phone" },
+    { accessorKey: "DongleWifi", header: "Dongle Wi-Fi" },
   ];
 
   // แสดงข้อมูลเมื่อโหลดสำเร็จ
@@ -73,7 +99,8 @@ const Assets = () => {
             showSidebarRight={showSidebarRight}
             setShowSidebarRight={setShowSidebarRight}
           />
-          <div className="flex-grow-1"
+          <div
+            className="flex-grow-1"
             style={{
               overflowX: "clip",
               width: "100%",
