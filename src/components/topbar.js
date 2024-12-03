@@ -66,9 +66,9 @@ function Topbar() {
   return (
     <div>
             {/*++++++++++++++++ Navbar top +++++++++++++++++++++++++++++++++ */}
-            <Navbar expand="lg" style={{ backgroundColor: "#39CAFF", color: "white" }}>
+            <Navbar expand="lg" style={{ backgroundColor: "#118DCE", color: "white" }}>
                 <Container fluid className="d-flex justify-content-between align-items-center customJustifyTopHead">
-                    <Navbar.Brand href="/assets" style={{ color: "#081E26", fontWeight: "500" }}>
+                    <Navbar.Brand href="/assets" style={{ color: "#fff", fontWeight: "500" }}>
                         <i className="bi bi-display pe-3"></i> OMG Digital - Asset Management
                     </Navbar.Brand>
                     <div className="d-flex gap-3 align-items-center py-3 py-md-0 py-lg-0">

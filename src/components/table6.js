@@ -118,6 +118,7 @@ const Table6 = ({
     columns,
     data: filteredData, // Using filteredData in the table
     enableEditing: true, // Enable editing
+    enableColumnOrdering: true,
     //---------------------------------------------Action-----------------------------------------
     renderRowActions: ({ row, table }) => (
       <Box style={{ display: "flex" }}>

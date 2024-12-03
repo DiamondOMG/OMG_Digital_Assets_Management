@@ -10,8 +10,8 @@ import { useViews } from "@/hook/useViews";
 import ProtectedRoute from "@/components/protectedRoute"; // Protect route if user don't have token
 
 const Assets = () => {
-  const [showSidebarLeft, setShowSidebarLeft] = useState(true); // Left sidebar  สำหรับเก็บตัวส่ง prop ไปให้ Header and Table6
-  const [showSidebarRight, setShowSidebarRight] = useState(true); // Right sidebar  สำหรับเก็บตัวส่ง prop ไปให้ Header and Table6
+  const [showSidebarLeft, setShowSidebarLeft] = useState(false); // Left sidebar  สำหรับเก็บตัวส่ง prop ไปให้ Header and Table6 
+  const [showSidebarRight, setShowSidebarRight] = useState(false); // Right sidebar  สำหรับเก็บตัวส่ง prop ไปให้ Header and Table6 
   const { data, isLoading, isError, error } = useAssets();
   const {
     data: dataView,
@@ -33,6 +33,21 @@ const Assets = () => {
   if (isError) return <p>Error: {error.message}</p>;
   if (isErrorView) return <p>Error: {errorView.message}</p>;
 
+  const storeSection = [
+    "-",
+    "Basket holder",
+    "Category signage",
+    "Chiller",
+    "Control room - Video",
+    "Food court",
+    "HB",
+    "HBA 9",
+    "Kiosk",
+    "LED - Entrance Aisle",
+    "LED-Billboard",
+    "Nine",
+  ];
+
   const columns = [
     {
       accessorKey: "MACADDRESS",
@@ -51,10 +66,46 @@ const Assets = () => {
         helperText: "Please type only A-Z and 0-9",
       },
     },
-    { accessorKey: "TimeStamp (Last)", header: "Last Timestamp" },
-    { accessorKey: "Playbox Label", header: "Playbox Label" },
-    { accessorKey: "Store Location", header: "Store Location" },
-    { accessorKey: "Store Section", header: "Store Section" },
+    {
+      accessorKey: "TimeStamp (Last)",
+      header: "Last Timestamp",
+      muiEditTextFieldProps: {
+        required: true,
+        onInput: (event) => {
+          const value = event.target.value;
+          const numericRegex = /[^0-9]/g;
+          event.target.value = value.replace(numericRegex, ""); // ลบตัวอักษรที่ไม่ใช่ตัวเลข
+        },
+        onBlur: (event) => {
+          const value = event.target.value;
+          if (value.length < 13) {
+            alert("Timestamp must be at least 13 digits long.");
+          }
+        },
+        helperText: "Please type only numbers (0-9) with at least 13 digits",
+      },
+    },
+    {
+      accessorKey: "Playbox Label",
+      header: "Playbox Label",
+      muiEditTextFieldProps: { require: true },
+    },
+    {
+      accessorKey: "Store Location",
+      header: "Store Location",
+      muiEditTextFieldProps: { require: true },
+    },
+    {
+      accessorKey: "Store Section",
+      header: "Store Section",
+      filterVariant: "select",
+      filterSelectOptions: storeSection, // predefined options
+      editVariant: "select",
+      editSelectOptions: storeSection,
+      muiEditTextFieldProps: {
+        select: true, // Use a select dropdown
+      },
+    },
     { accessorKey: "StoreCode", header: "Store Code" },
     { accessorKey: "RUNNO(Some)", header: "Run Number" },
     { accessorKey: "GroupID", header: "Group ID" },
