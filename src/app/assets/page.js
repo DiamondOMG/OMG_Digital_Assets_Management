@@ -10,8 +10,8 @@ import { useViews } from "@/hook/useViews";
 import ProtectedRoute from "@/components/protectedRoute"; // Protect route if user don't have token
 
 const Assets = () => {
-  const [showSidebarLeft, setShowSidebarLeft] = useState(true); // Left sidebar  สำหรับเก็บตัวส่ง prop ไปให้ Header and Table6 
-  const [showSidebarRight, setShowSidebarRight] = useState(true); // Right sidebar  สำหรับเก็บตัวส่ง prop ไปให้ Header and Table6 
+  const [showSidebarLeft, setShowSidebarLeft] = useState(false); // Left sidebar  สำหรับเก็บตัวส่ง prop ไปให้ Header and Table6 
+  const [showSidebarRight, setShowSidebarRight] = useState(false); // Right sidebar  สำหรับเก็บตัวส่ง prop ไปให้ Header and Table6 
   const { data, isLoading, isError, error } = useAssets();
   const {
     data: dataView,
