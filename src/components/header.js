@@ -18,7 +18,7 @@ const Header = ({ showSidebarLeft, setShowSidebarLeft, showSidebarRight, setShow
     const dropdownRef = useRef(null);
 
     const toggleAccount = () => setShowAccount((prev) => !prev); // ฟังก์ชันสำหรับเปลี่ยนสถานะ
-    const toggleNavbarItems = () => setShowNavbarItems((prev) => !prev); // ฟังก์ชันสำหรับเปลี่ยนสถานะ
+    const toggleNavbarItems = () => setShowNavbarItems((prev) => !prev); // ฟังก์ชันสำหรับเปลี่ยนสถานะ menu mobile/ ipad screen
 
     const handleClickOutside = (event) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
