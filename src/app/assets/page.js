@@ -8,10 +8,11 @@ import Table6 from "@/components/table6";
 import { useAssets } from "@/hook/useAssets";
 import { useViews } from "@/hook/useViews";
 import ProtectedRoute from "@/components/protectedRoute"; // Protect route if user don't have token
+import Table7 from "@/components/table7";
 
 const Assets = () => {
-  const [showSidebarLeft, setShowSidebarLeft] = useState(false); // Left sidebar  สำหรับเก็บตัวส่ง prop ไปให้ Header and Table6 
-  const [showSidebarRight, setShowSidebarRight] = useState(false); // Right sidebar  สำหรับเก็บตัวส่ง prop ไปให้ Header and Table6 
+  const [showSidebarLeft, setShowSidebarLeft] = useState(false); // Left sidebar  สำหรับเก็บตัวส่ง prop ไปให้ Header and Table6
+  const [showSidebarRight, setShowSidebarRight] = useState(true); // Right sidebar  สำหรับเก็บตัวส่ง prop ไปให้ Header and Table6
   const { data, isLoading, isError, error } = useAssets();
   const {
     data: dataView,
@@ -46,6 +47,19 @@ const Assets = () => {
     "LED - Entrance Aisle",
     "LED-Billboard",
     "Nine",
+  ];
+
+  const displayAspectRatio = ["1080x1920", "1344x768", "1920x1080", "1920x540"];
+
+  const retailers = [
+    "CJ More",
+    "CJ Express",
+    "FamilyMart",
+    "Tesco",
+    "Tops",
+    "Big C",
+    "Tesco Lotus",
+    "Makro",
   ];
 
   const columns = [
@@ -112,7 +126,17 @@ const Assets = () => {
     { accessorKey: "GroupName", header: "Group Name" },
     { accessorKey: "TimeStamp (Last Run)", header: "Last Run Timestamp" },
     { accessorKey: "Black Condition", header: "Black Condition" },
-    { accessorKey: "Retailer", header: "Retailer" },
+    {
+      accessorKey: "Retailer",
+      header: "Retailer",
+      filterVariant: "select",
+      filterSelectOptions: retailers, // predefined options
+      editVariant: "select",
+      editSelectOptions: retailers,
+      muiEditTextFieldProps: {
+        select: true, // Use a select dropdown
+      },
+    },
     { accessorKey: "Category", header: "Category" },
     {
       accessorKey: "DisplayConnected",
@@ -123,6 +147,13 @@ const Assets = () => {
       accessorKey: "Display AspectRatio",
       header: "Display Aspect Ratio",
       size: 300,
+      filterVariant: "select",
+      filterSelectOptions: displayAspectRatio, // predefined options
+      editVariant: "select",
+      editSelectOptions: displayAspectRatio,
+      muiEditTextFieldProps: {
+        select: true, // Use a select dropdown
+      },
     },
     { accessorKey: "Display Arrangement", header: "Display Arrangement" },
     { accessorKey: "Display Position", header: "Display Position" },
@@ -159,7 +190,7 @@ const Assets = () => {
               padding: "20px",
             }}
           >
-            <Table6
+            <Table7
               data={data}
               columns={columns}
               views={views}
