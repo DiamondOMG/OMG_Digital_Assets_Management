@@ -131,6 +131,8 @@ const Table7 = ({
     data: filteredData, // Using filteredData in the table
     enableEditing: true, // Enable editing
     enableColumnOrdering: true,
+    enableBottomToolbar: true,
+    positionBottomToolbar: "sticky",
     //---------------------------------------------Action-----------------------------------------
     renderRowActions: ({ row, table }) => (
       <Box style={{ display: "flex" }}>
@@ -218,7 +220,8 @@ const Table7 = ({
     },
     muiTableContainerProps: {
       sx: {
-        maxHeight: "600px", // ตั้งค่า maxHeight เป็น 'unset' เพื่อให้ตารางไม่จำกัดความสูง
+        maxHeight: "calc(80vh - 200px)", // Adjust height to leave space for bottom sections
+        overflow: "auto", // ตั้งค่า maxHeight เป็น 'unset' เพื่อให้ตารางไม่จำกัดความสูง
       },
     },
     /// save view----------------------------------------------------------------------------
@@ -532,7 +535,7 @@ const Table7 = ({
               gap="8px"
               sx={{
                 width: "350px",
-                maxHeight: "700px",
+                maxHeight: "calc(80vh - 150px)",
                 overflowY: "auto", // เพิ่ม scrollable behavior
               }}
             >

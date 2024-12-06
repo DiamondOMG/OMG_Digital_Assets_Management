@@ -174,7 +174,7 @@ const Assets = () => {
   return (
     <>
       <ProtectedRoute>
-        <div className="d-flex flex-column min-vh-100">
+        <div className="d-flex flex-column vh-100 overflow-hidden position-relative">
           <Header
             showSidebarLeft={showSidebarLeft}
             setShowSidebarLeft={setShowSidebarLeft}
@@ -182,14 +182,18 @@ const Assets = () => {
             setShowSidebarRight={setShowSidebarRight}
           />
           <div
-            className="flex-grow-1"
-            style={{
-              overflowX: "clip",
-              width: "100%",
-              marginTop: "135px",
-              padding: "20px",
-            }}
-          >
+          className="flex-grow-1"
+          style={{
+            overflowX: "clip",
+            width: "100%",
+            marginTop: "135px",
+            padding: "20px",
+            position: "absolute",
+            top: 0,
+            bottom: "50px", // ให้เหลือพื้นที่สำหรับ Footer
+            overflowY: "hidden",
+          }}
+        >
             <Table7
               data={data}
               columns={columns}
@@ -201,7 +205,16 @@ const Assets = () => {
               setShowSidebarRight={setShowSidebarRight}
             />
           </div>
+          <div 
+          style={{
+            position: "absolute", 
+            bottom: 0, 
+            width: "100%", 
+            height: "50px" // ความสูงของ Footer
+          }}
+        >
           <Footer />
+        </div>
         </div>
       </ProtectedRoute>
     </>
