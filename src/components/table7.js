@@ -220,7 +220,7 @@ const Table7 = ({
     },
     muiTableContainerProps: {
       sx: {
-        maxHeight: "calc(80vh - 170px)", // Adjust height to leave space for bottom sections
+        maxHeight: "calc(100vh - 350px)", // Adjust height to leave space for bottom sections
         overflow: "auto", // ตั้งค่า maxHeight เป็น 'unset' เพื่อให้ตารางไม่จำกัดความสูง
       },
     },
