@@ -220,7 +220,7 @@ const Table7 = ({
     },
     muiTableContainerProps: {
       sx: {
-        maxHeight: "calc(80vh - 200px)", // Adjust height to leave space for bottom sections
+        maxHeight: "calc(80vh - 170px)", // Adjust height to leave space for bottom sections
         overflow: "auto", // ตั้งค่า maxHeight เป็น 'unset' เพื่อให้ตารางไม่จำกัดความสูง
       },
     },
@@ -535,7 +535,7 @@ const Table7 = ({
               gap="8px"
               sx={{
                 width: "350px",
-                maxHeight: "calc(80vh - 150px)",
+                maxHeight: "calc(80vh - 100px)",
                 overflowY: "auto", // เพิ่ม scrollable behavior
               }}
             >
