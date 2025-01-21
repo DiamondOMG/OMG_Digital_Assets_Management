@@ -27,8 +27,9 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { exportCsv } from "@/utils/exportCsv"; // นำเข้าฟังก์ชันจากไฟล์ที่แยกออกมา
 import { exportPdf } from "@/utils/exportPdf"; // นำเข้าฟังก์ชัน export PDF ที่คุณสร้าง
 import { exportExcel } from "@/utils/exportExcel";
+import { MRT_ExpandAllButton } from "material-react-table";
 
-const Table3 = ({ data, columns }) => {
+const Table4 = ({ data, columns }) => {
   const [anchorElCsv, setAnchorElCsv] = useState(null);
   const [anchorElPdf, setAnchorElPdf] = useState(null);
   const [anchorElExcel, setAnchorElExcel] = useState(null);
@@ -51,7 +52,43 @@ const Table3 = ({ data, columns }) => {
   // สร้าง table instance
   const table = useMaterialReactTable({
     columns,
-    data: filteredData, // ใช้ filteredData ใน table
+    data: filteredData, // Using filteredData in the table
+    displayColumnDefOptions: {
+      "mrt-row-expand": {
+        Header: () => (
+          <Stack direction="row" alignItems="center">
+            <MRT_ExpandAllButton table={table} />
+            <Box>Groups</Box>
+          </Stack>
+        ),
+        GroupedCell: ({ row, table }) => {
+          const { grouping } = table.getState();
+          return row.getValue(grouping[grouping.length - 1]); // แสดงกรุ๊ปเฉพาะใน Cell โดยไม่เพิ่มแถวใหม่
+        },
+        enableResizing: true,
+        muiTableBodyCellProps: ({ row }) => ({
+          sx: (theme) => ({
+            color:
+              row.depth === 0
+                ? theme.palette.primary.main
+                : row.depth === 1
+                ? theme.palette.secondary.main
+                : undefined,
+          }),
+        }),
+        size: 200,
+      },
+    },
+    enableGrouping: true,
+    enableColumnResizing: true,
+    groupedColumnMode: "remove", // ลบคอลัมน์กรุ๊ปออกจากตารางหลัก
+    initialState: {
+      density: "compact",
+      expanded: false, // ปิดการขยายกรุ๊ปเริ่มต้น
+      grouping: [], // ไม่เลือกกรุ๊ปเริ่มต้น
+      pagination: { pageIndex: 0, pageSize: 20 },
+      sorting: [{ id: "state", desc: false }],
+    },
     enableRowSelection: true,
     enableStickyHeader: true,
     enableStickyFooter: true,
@@ -331,7 +368,7 @@ const Table3 = ({ data, columns }) => {
             <Button onClick={handleCloseDialog}>Cancel</Button>
             <Button
               onClick={handleSaveFilteredIds}
-              disabled={!groupName.trim()}  
+              disabled={!groupName.trim()}
             >
               Save
             </Button>
@@ -342,4 +379,4 @@ const Table3 = ({ data, columns }) => {
   );
 };
 
-export default Table3;
+export default Table4;
