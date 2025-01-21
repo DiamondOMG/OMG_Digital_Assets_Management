@@ -2,7 +2,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-const VIEW_URL = "http://127.0.0.1:8000/view"; // URL สำหรับ API view
+const VIEW_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/view`; // เปลี่ยน URL
 
 // ฟังก์ชันดึงข้อมูล (GET)
 export const useViews = () => {

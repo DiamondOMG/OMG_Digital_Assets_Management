@@ -2,7 +2,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-const ASSET_URL = "http://127.0.0.1:8000/asset";
+const ASSET_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/asset`;
 
 // ฟังก์ชันดึงข้อมูล (GET)
 export const useAssets = () => {

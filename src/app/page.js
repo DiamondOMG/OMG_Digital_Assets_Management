@@ -34,7 +34,6 @@ const Login = () => {
         title: "Required all field",
         text: "Please fill in both Username and Password .",
         confirmButtonText: "OK", // Confirmation button
-        
       });
       return; // หยุดการทำงานถ้าข้อมูลไม่ครบ
     } else {
@@ -45,11 +44,11 @@ const Login = () => {
         password: password,
       };
 
-      setIsLoading(true);  // เปิด Loading
+      setIsLoading(true); // เปิด Loading
       try {
         // ส่ง Request API Login ด้วย Axios  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         const response = await axios.post(
-          "http://127.0.0.1:8000/users/login",
+          `${process.env.NEXT_PUBLIC_BASE_URL}/users/login`,
           data,
           {
             headers: {
@@ -68,7 +67,6 @@ const Login = () => {
           localStorage.setItem("position", response.data.user.position); //เก็บ position ใน localstorage
           router.push("/assets"); // เปลี่ยนไปหน้า assets
           setIsLoading(false); // ให้หยุด Loading หลังโหลดข้อมูลเสร็จ
-          
         } else {
           console.log("Login failed: Try again");
         }
@@ -80,7 +78,7 @@ const Login = () => {
           title: "Login failed <br> please try again",
           confirmButtonText: "OK", // Confirmation button
         });
-      } finally{
+      } finally {
         setIsLoading(false); // ให้หยุด Loading หลังโหลดข้อมูลเสร็จ
         return; // หยุดการทำงานเพิ่มเติมในฟังก์ชันนี้
       }
